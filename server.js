@@ -1,4 +1,4 @@
-const http = require("http");
+﻿const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
@@ -6,15 +6,15 @@ const crypto = require("crypto");
 const HOST = process.env.HOST || "0.0.0.0";
 const PORT = Number(process.env.PORT || 3000);
 const ROOT = __dirname;
-const STORAGE_ROOT = process.env.STORAGE_DIR
-  ? path.resolve(process.env.STORAGE_DIR)
-  : ROOT;
+const STORAGE_ROOT = process.env.STORAGE_DIR ? path.resolve(process.env.STORAGE_DIR) : ROOT;
 const DATA_DIR = path.join(STORAGE_ROOT, "data");
 const UPLOAD_DIR = path.join(STORAGE_ROOT, "uploads");
 const ORDERS_FILE = path.join(DATA_DIR, "orders.json");
 const PAYMENTS_FILE = path.join(DATA_DIR, "payments.json");
 const USERS_FILE = path.join(DATA_DIR, "users.json");
 const MAX_BODY_SIZE = 80 * 1024 * 1024;
+const SMS_CODE_TTL = 5 * 60 * 1000;
+const smsCodeStore = new Map();
 
 function ensureStorage() {
   fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -99,6 +99,14 @@ function sanitizeFileName(name) {
   return String(name || "unnamed.bin").replace(/[\\/:*?"<>|]/g, "_");
 }
 
+function normalizePhone(phone) {
+  return String(phone || "").replace(/\D/g, "");
+}
+
+function isValidChinaPhone(phone) {
+  return /^1\d{10}$/.test(normalizePhone(phone));
+}
+
 function createOrderId(existingOrders) {
   const now = new Date();
   const datePart = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}`;
@@ -132,40 +140,122 @@ function publicUser(user) {
   return {
     id: user.id,
     name: user.name,
-    email: user.email,
+    email: user.email || "",
     phone: user.phone || ""
   };
+}
+
+function createSmsCode() {
+  return String(Math.floor(100000 + Math.random() * 900000));
+}
+
+function setSmsCode(phone) {
+  const normalizedPhone = normalizePhone(phone);
+  const code = createSmsCode();
+  smsCodeStore.set(normalizedPhone, {
+    code,
+    expiresAt: Date.now() + SMS_CODE_TTL
+  });
+  return code;
+}
+
+function clearSmsCode(phone) {
+  smsCodeStore.delete(normalizePhone(phone));
+}
+
+function verifySmsCode(phone, code) {
+  const normalizedPhone = normalizePhone(phone);
+  const session = smsCodeStore.get(normalizedPhone);
+
+  if (!session) {
+    return { ok: false, error: "请先获取短信验证码" };
+  }
+
+  if (Date.now() > session.expiresAt) {
+    clearSmsCode(normalizedPhone);
+    return { ok: false, error: "验证码已过期，请重新获取" };
+  }
+
+  if (String(code || "").trim() !== session.code) {
+    return { ok: false, error: "短信验证码不正确" };
+  }
+
+  clearSmsCode(normalizedPhone);
+  return { ok: true };
+}
+
+function findUserByPhone(users, phone) {
+  const normalizedPhone = normalizePhone(phone);
+  return users.find((user) => normalizePhone(user.phone) === normalizedPhone);
+}
+
+async function handleSendSmsCode(req, res) {
+  try {
+    const payload = parseJsonBody(await getRequestBody(req));
+    const phone = normalizePhone(payload.phone);
+
+    if (!isValidChinaPhone(phone)) {
+      sendJson(res, 400, { error: "请输入有效的 11 位手机号" });
+      return;
+    }
+
+    const users = readJson(USERS_FILE);
+    if (payload.purpose === "register" && findUserByPhone(users, phone)) {
+      sendJson(res, 409, { error: "该手机号已注册，请直接登录" });
+      return;
+    }
+
+    const code = setSmsCode(phone);
+    sendJson(res, 200, {
+      ok: true,
+      message: "验证码已发送",
+      phone,
+      demoCode: code,
+      expiresInSeconds: 300
+    });
+  } catch (error) {
+    sendJson(res, 500, { error: error.message || "验证码发送失败" });
+  }
 }
 
 async function handleRegister(req, res) {
   try {
     const payload = parseJsonBody(await getRequestBody(req));
-    if (!payload.name || !payload.email || !payload.password) {
-      sendJson(res, 400, { error: "请填写姓名、邮箱和密码" });
+    const name = String(payload.name || "").trim();
+    const phone = normalizePhone(payload.phone);
+    const password = String(payload.password || "");
+    const code = String(payload.code || "").trim();
+
+    if (!name || !isValidChinaPhone(phone) || !code || !password) {
+      sendJson(res, 400, { error: "请填写姓名、手机号、短信验证码和登录密码" });
       return;
     }
 
-    if (String(payload.password).length < 6) {
+    if (password.length < 6) {
       sendJson(res, 400, { error: "密码至少需要 6 位" });
       return;
     }
 
     const users = readJson(USERS_FILE);
-    const email = String(payload.email).trim().toLowerCase();
-    const existed = users.find((user) => String(user.email).toLowerCase() === email);
-    if (existed) {
-      sendJson(res, 409, { error: "该邮箱已注册" });
+    if (findUserByPhone(users, phone)) {
+      sendJson(res, 409, { error: "该手机号已注册，请直接登录" });
+      return;
+    }
+
+    const verification = verifySmsCode(phone, code);
+    if (!verification.ok) {
+      sendJson(res, 400, { error: verification.error });
       return;
     }
 
     const passwordSalt = createSalt();
     const user = {
       id: createUserId(users),
-      name: String(payload.name).trim(),
-      email,
-      phone: String(payload.phone || "").trim(),
+      name,
+      email: "",
+      phone,
       passwordSalt,
-      passwordHash: hashPassword(String(payload.password), passwordSalt),
+      passwordHash: hashPassword(password, passwordSalt),
       createdAt: new Date().toISOString()
     };
 
@@ -180,13 +270,13 @@ async function handleRegister(req, res) {
 async function handleLogin(req, res) {
   try {
     const payload = parseJsonBody(await getRequestBody(req));
-    const email = String(payload.email || "").trim().toLowerCase();
+    const phone = normalizePhone(payload.phone);
     const password = String(payload.password || "");
     const users = readJson(USERS_FILE);
-    const user = users.find((item) => String(item.email).toLowerCase() === email);
+    const user = findUserByPhone(users, phone);
 
     if (!user || !verifyPassword(password, user)) {
-      sendJson(res, 401, { error: "邮箱或密码不正确" });
+      sendJson(res, 401, { error: "手机号或密码不正确" });
       return;
     }
 
@@ -234,6 +324,7 @@ async function handleCreateOrder(req, res) {
       id: orderId,
       accountId: account.id,
       accountName: account.name,
+      accountPhone: account.phone || "",
       projectName: String(payload.projectName).trim(),
       contact: String(payload.contact).trim(),
       focus: String(payload.focus || "").trim(),
@@ -324,7 +415,12 @@ function handleRoute(req, res) {
     return;
   }
 
-  if (req.method === "POST" && pathname === "/api/register") {
+  if (req.method === "POST" && pathname === "/api/sms-code") {
+    handleSendSmsCode(req, res);
+    return;
+  }
+
+  if (req.method === "POST" && (pathname === "/api/register" || pathname === "/api/register-phone")) {
     handleRegister(req, res);
     return;
   }

@@ -330,6 +330,13 @@ body::before {
   margin-bottom: 18px;
 }
 
+.case-grid,
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
 .service-grid,
 .proof-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -349,6 +356,17 @@ body::before {
 .package-card {
   position: relative;
   padding: 24px;
+}
+
+.case-card,
+.testimonial-card,
+.checklist-card,
+.closing-cta {
+  padding: 24px;
+  border-radius: 26px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
 }
 
 .package-card strong {
@@ -384,6 +402,67 @@ body::before {
 
 .card-list li + li {
   margin-top: 8px;
+}
+
+.case-type {
+  display: inline-flex;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(30, 127, 85, 0.1);
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.testimonial-card p {
+  margin-top: 0;
+  font-size: 1.02rem;
+  line-height: 1.8;
+}
+
+.testimonial-card strong,
+.testimonial-card span {
+  display: block;
+}
+
+.testimonial-card strong {
+  margin-top: 18px;
+}
+
+.testimonial-card span {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.checklist-card {
+  margin-top: 18px;
+}
+
+.checklist-card h3 {
+  margin: 0 0 12px;
+}
+
+.closing-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background: linear-gradient(135deg, rgba(255, 248, 235, 0.98) 0%, rgba(248, 220, 192, 0.82) 100%);
+}
+
+.closing-cta h2 {
+  margin: 0;
+  max-width: 14ch;
+  font-family: "Space Grotesk", "Noto Sans SC", sans-serif;
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  line-height: 1.08;
+}
+
+.closing-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .timeline-card span {
@@ -678,6 +757,26 @@ textarea {
   margin-top: 18px;
 }
 
+.auth-inline {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: end;
+  margin-bottom: 18px;
+}
+
+.auth-inline-field {
+  margin: 0;
+}
+
+.auth-inline .button {
+  min-width: 140px;
+}
+
+.auth-tips {
+  margin-top: 18px;
+}
+
 .inner-shell {
   padding-bottom: 40px;
 }
@@ -744,6 +843,8 @@ textarea {
   .review-layout,
   .timeline,
   .package-grid,
+  .case-grid,
+  .testimonial-grid,
   .service-grid,
   .proof-grid {
     grid-template-columns: 1fr 1fr;
@@ -770,11 +871,14 @@ textarea {
   .review-layout,
   .timeline,
   .package-grid,
+  .case-grid,
+  .testimonial-grid,
   .service-grid,
   .proof-grid,
   .payment-page,
   .auth-grid,
   .admin-grid,
+  .auth-inline,
   .form-grid,
   .hero-metrics,
   .signal-grid,
@@ -801,6 +905,10 @@ textarea {
   .hero-panel,
   .glass-panel {
     padding: 22px;
+  }
+
+  .closing-cta {
+    display: grid;
   }
 
   .hero h1 {
