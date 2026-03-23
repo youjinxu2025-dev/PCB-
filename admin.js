@@ -50,7 +50,7 @@ function renderPayments(payments) {
 
 async function loadDashboard() {
   if (!window.location.protocol.startsWith("http")) {
-    adminEls.ordersBody.innerHTML = '<tr><td colspan="7">请先通过线上地址或本地 Node 服务打开网站，再查看后台数据</td></tr>';
+    adminEls.ordersBody.innerHTML = '<tr><td colspan="7">请先通过线上地址访问网站，再查看后台数据</td></tr>';
     return;
   }
 

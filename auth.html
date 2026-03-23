@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>登录 / 注册 | PCB审图工坊</title>
+  <title>登录 / 注册 | 审图工坊</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -32,8 +32,9 @@
     <main class="section">
       <div class="section-heading reveal visible">
         <p class="eyebrow">账号中心</p>
-        <h2>先注册登录，再提交订单与上传设计文件</h2>
+        <h2>先完成注册登录，再提交订单、上传工程文件和查看后续流程</h2>
       </div>
+
       <div class="panel-grid auth-grid">
         <section class="glass-panel reveal visible">
           <div class="panel-head">
@@ -43,7 +44,7 @@
           <div class="form-grid">
             <label>
               <span>姓名</span>
-              <input id="registerName" type="text" placeholder="例如：张工">
+              <input id="registerName" type="text" placeholder="例如：张工 / 李工">
             </label>
             <label>
               <span>邮箱</span>
@@ -58,13 +59,17 @@
               <input id="registerPassword" type="password" placeholder="至少 6 位">
             </label>
           </div>
+          <ul class="card-list">
+            <li>注册后可直接下单、上传文件、查看支付和后台状态</li>
+            <li>建议用常用邮箱注册，方便后续订单通知</li>
+          </ul>
           <button class="button button-primary full" id="registerBtn" type="button">注册账号</button>
         </section>
 
         <section class="glass-panel reveal visible">
           <div class="panel-head">
             <h3>用户登录</h3>
-            <span>登录后可以直接提交订单</span>
+            <span>已有账号可直接继续下单</span>
           </div>
           <div class="form-grid">
             <label>
@@ -79,6 +84,9 @@
           <div class="action-row">
             <button class="button button-primary" id="loginBtn" type="button">登录</button>
             <button class="button button-secondary" id="logoutBtn" type="button">退出登录</button>
+          </div>
+          <div class="mini-note">
+            登录成功后，首页右上角会显示已登录状态，下单时会自动绑定当前账号。
           </div>
         </section>
       </div>

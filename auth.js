@@ -22,7 +22,7 @@ function saveCurrentUser(user) {
 
 async function register() {
   if (!window.location.protocol.startsWith("http")) {
-    setAuthMessage("请先通过线上地址或本地 Node 服务打开网站，再使用注册登录功能。", "error");
+    setAuthMessage("请先通过线上地址访问网站，再使用注册登录功能。", "error");
     return;
   }
 
@@ -54,7 +54,7 @@ async function register() {
 
 async function login() {
   if (!window.location.protocol.startsWith("http")) {
-    setAuthMessage("请先通过线上地址或本地 Node 服务打开网站，再使用注册登录功能。", "error");
+    setAuthMessage("请先通过线上地址访问网站，再使用注册登录功能。", "error");
     return;
   }
 

@@ -29,9 +29,9 @@ const els = {
 const priceMap = { schematic: 499, pcb: 699, combo: 1199 };
 const layerMap = { 2: 0, 4: 200, 6: 450, 8: 800 };
 const complexityMap = {
-  basic: { price: 0, label: "适合基础控制板或常规接口板" },
-  mid: { price: 300, label: "适合多接口、多电源或中等复杂项目" },
-  high: { price: 800, label: "适合高速、电源、混合信号复杂项目" }
+  basic: { price: 0, label: "适合基础控制板、常规接口板或简单MCU小系统" },
+  mid: { price: 300, label: "适合多接口、多电源或中等复杂度项目" },
+  high: { price: 800, label: "适合高速、电源、混合信号或复杂约束项目" }
 };
 const speedMap = { standard: 0, rush: 500 };
 
@@ -82,8 +82,10 @@ function updateSummary() {
 function updatePrice() {
   const total = getCurrentPrice();
   const complexity = complexityMap[els.complexity.value];
+  const rushText = els.speed.value === "rush" ? " / 含加急费用" : "";
+
   els.priceValue.textContent = `￥${total}`;
-  els.priceHint.textContent = `${els.layerCount.value} 层 / ${complexity.label}${els.speed.value === "rush" ? " / 含加急费" : ""}`;
+  els.priceHint.textContent = `${els.layerCount.value} 层 / ${complexity.label}${rushText}`;
   updateSummary();
 }
 
@@ -174,7 +176,7 @@ function hydrateAuth() {
 
 async function submitOrder() {
   if (!isServerMode()) {
-    setMessage("请先通过线上地址或本地 Node 服务打开网站，再使用上传和支付功能。", "error");
+    setMessage("请先通过线上地址访问网站，再使用上传和支付功能。", "error");
     return;
   }
 

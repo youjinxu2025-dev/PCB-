@@ -21,7 +21,7 @@ function hydrateOrderId() {
 
 async function submitPayment() {
   if (!window.location.protocol.startsWith("http")) {
-    setPayMessage("请先通过线上地址或本地 Node 服务打开网站，再使用支付登记功能。", "error");
+    setPayMessage("请先通过线上地址访问网站，再使用支付登记功能。", "error");
     return;
   }
 

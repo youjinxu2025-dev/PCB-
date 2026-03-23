@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>支付入口 | PCB审图工坊</title>
+  <title>支付入口 | 审图工坊</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -32,22 +32,22 @@
     <main class="section">
       <div class="section-heading reveal visible">
         <p class="eyebrow">支付中心</p>
-        <h2>录入付款信息，后台自动更新订单状态</h2>
+        <h2>录入付款信息后，后台会自动同步订单支付状态</h2>
       </div>
       <div class="panel-grid payment-page">
         <section class="glass-panel reveal visible">
           <div class="panel-head">
-            <h3>订单信息</h3>
+            <h3>付款登记</h3>
             <span>支持从首页自动带入订单号</span>
           </div>
           <div class="form-grid">
             <label>
               <span>订单号</span>
-              <input id="orderId" type="text" placeholder="例如：PCB-20260323-001">
+              <input id="orderId" type="text" placeholder="例如：PCB-20260324-001">
             </label>
             <label>
               <span>付款人姓名</span>
-              <input id="payerName" type="text" placeholder="填写客户名称">
+              <input id="payerName" type="text" placeholder="填写公司名 / 个人姓名">
             </label>
             <label>
               <span>支付方式</span>
@@ -64,7 +64,7 @@
           </div>
           <label>
             <span>付款备注</span>
-            <textarea id="payNote" rows="4" placeholder="例如：已支付预付款，尾号 4821"></textarea>
+            <textarea id="payNote" rows="4" placeholder="例如：已支付预付款、转账时间、付款尾号、联系人等"></textarea>
           </label>
           <div class="action-row">
             <button class="button button-primary" id="paySubmitBtn" type="button">提交付款记录</button>
@@ -75,8 +75,8 @@
 
         <aside class="glass-panel reveal visible">
           <div class="panel-head">
-            <h3>支付说明</h3>
-            <span>适合作为真实支付页原型</span>
+            <h3>付款说明</h3>
+            <span>先把客户最关心的问题写清楚</span>
           </div>
           <div class="payment-card">
             <div class="payment-method">
@@ -84,13 +84,16 @@
               <strong>提交订单后登记付款，后台实时更新状态</strong>
             </div>
             <div class="payment-method">
-              <span>建议商用升级</span>
-              <strong>后续接入微信支付商户、支付宝当面付或二维码收款</strong>
+              <span>付款建议</span>
+              <strong>推荐下单先付预付款，交付后再付尾款</strong>
             </div>
             <div class="payment-method">
-              <span>当前用途</span>
-              <strong>这版适合先快速上线验证业务</strong>
+              <span>后续可升级</span>
+              <strong>后面可接微信支付商户、支付宝当面付或二维码收款</strong>
             </div>
+          </div>
+          <div class="mini-note">
+            现在这版支付页适合先跑真实接单流程，等业务稳定后再接官方支付接口。
           </div>
         </aside>
       </div>
