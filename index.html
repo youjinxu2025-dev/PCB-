@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PCB审图工坊 | 原理图与PCB在线审核接单平台</title>
+  <meta
+    name="description"
+    content="为初级电子工程师提供原理图审核、PCB审核、EMC/DFM检查、改版建议与在线报价服务。"
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="#hero">
+        <span class="brand-badge">PCB</span>
+        <span>
+          <strong>审图工坊</strong>
+          <small>原理图 / PCB 专业审核接单</small>
+        </span>
+      </a>
+      <nav class="nav">
+        <a href="#services">服务</a>
+        <a href="#upload">上传</a>
+        <a href="#pricing">收费</a>
+        <a href="#review">评审</a>
+        <a href="payment.html">支付</a>
+        <a href="admin.html">后台</a>
+        <a id="authLink" href="auth.html">登录 / 注册</a>
+      </nav>
+      <div class="topbar-actions">
+        <span class="user-badge" id="userBadge">未登录</span>
+        <a class="button button-primary" href="#upload">立即下单</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="hero">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">电子工程师的线上审图工作台</p>
+          <h1>让初级工程师少走弯路，把原理图和 PCB 问题挡在打样前</h1>
+          <p class="hero-text">
+            面向个人工程师、小团队与硬件创业项目，提供原理图审核、PCB设计检查、
+            可制造性分析、评审改进建议与加急复核服务。在线上传文件，在线估价，在线沟通修改。
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#upload">上传设计文件</a>
+            <a class="button button-secondary" href="payment.html">进入支付入口</a>
+          </div>
+          <ul class="hero-metrics">
+            <li>
+              <strong>24h</strong>
+              <span>标准审核交付</span>
+            </li>
+            <li>
+              <strong>300+</strong>
+              <span>可检查规则项</span>
+            </li>
+            <li>
+              <strong>1 对 1</strong>
+              <span>整改建议反馈</span>
+            </li>
+          </ul>
+        </div>
+        <div class="hero-panel reveal">
+          <div class="signal-card">
+            <span class="signal-title">当前适配项目</span>
+            <div class="signal-grid">
+              <div>
+                <strong>消费电子</strong>
+                <p>蓝牙、MCU、小型电源板</p>
+              </div>
+              <div>
+                <strong>工控板卡</strong>
+                <p>接口、电源、隔离与保护</p>
+              </div>
+              <div>
+                <strong>嵌入式开发板</strong>
+                <p>高速接口与布局布线检查</p>
+              </div>
+              <div>
+                <strong>学习练手机构</strong>
+                <p>帮助新人建立正确设计习惯</p>
+              </div>
+            </div>
+          </div>
+          <div class="diagnostic-card">
+            <div class="diagnostic-head">
+              <span>快速诊断</span>
+              <span class="live-dot">在线接单中</span>
+            </div>
+            <ul>
+              <li>电源去耦与回流路径检查</li>
+              <li>丝印、封装、焊盘匹配检查</li>
+              <li>差分、阻抗、时钟走线检查</li>
+              <li>接口保护与 EMC 风险提示</li>
+              <li>DFM / DFA 制造装配风险建议</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="services">
+        <div class="section-heading reveal">
+          <p class="eyebrow">服务内容</p>
+          <h2>不只是找错，更是帮客户建立可复用的设计方法</h2>
+        </div>
+        <div class="service-grid">
+          <article class="service-card reveal">
+            <h3>原理图审核</h3>
+            <p>器件选型、接口定义、电源架构、保护电路、上下拉、时序与逻辑一致性检查。</p>
+          </article>
+          <article class="service-card reveal">
+            <h3>PCB审核</h3>
+            <p>布局合理性、回流路径、地分割、布线规则、网络约束、高速敏感走线与散热。</p>
+          </article>
+          <article class="service-card reveal">
+            <h3>打样前复核</h3>
+            <p>对Gerber、坐标文件、BOM与封装映射做最后一道关卡，降低返板概率。</p>
+          </article>
+          <article class="service-card reveal">
+            <h3>整改建议</h3>
+            <p>每个问题给出风险等级、原因分析、修改建议与优先级，适合新人快速成长。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="upload">
+        <div class="section-heading reveal">
+          <p class="eyebrow">在线上传</p>
+          <h2>支持文件上传到服务器，自动生成订单并跳转支付</h2>
+        </div>
+        <div class="server-banner reveal">
+          <strong>发布说明：</strong>
+          <span>正式上线后，用户从公网域名访问即可使用登录、上传、支付登记和后台管理功能。</span>
+        </div>
+        <div class="panel-grid">
+          <div class="glass-panel upload-panel reveal">
+            <div class="panel-head">
+              <h3>上传设计资料</h3>
+              <span>支持拖拽多个文件并提交到服务器</span>
+            </div>
+            <label class="dropzone" for="fileInput">
+              <input id="fileInput" type="file" multiple>
+              <strong>拖拽文件到这里，或点击选择</strong>
+              <p>建议上传：原理图、PCB源文件、Gerber、BOM、需求说明</p>
+            </label>
+            <div class="form-grid">
+              <label>
+                <span>项目名称</span>
+                <input id="projectName" type="text" placeholder="例如：STM32电机控制板审核">
+              </label>
+              <label>
+                <span>联系方式</span>
+                <input id="contact" type="text" placeholder="微信 / 手机 / 邮箱">
+              </label>
+              <label>
+                <span>审核重点</span>
+                <select id="focus">
+                  <option value="全面体检">全面体检</option>
+                  <option value="电源与EMC">电源与 EMC</option>
+                  <option value="高速与信号完整性">高速与信号完整性</option>
+                  <option value="DFM与打样前复核">DFM 与打样前复核</option>
+                </select>
+              </label>
+              <label>
+                <span>期望交付</span>
+                <select id="delivery">
+                  <option value="24小时标准交付">24 小时标准交付</option>
+                  <option value="12小时加急">12 小时加急</option>
+                  <option value="48小时深度审核">48 小时深度审核</option>
+                </select>
+              </label>
+            </div>
+            <label>
+              <span>补充说明</span>
+              <textarea id="notes" rows="4" placeholder="例如：担心USB、开关电源、高边采样、ADC精度、差分线等问题"></textarea>
+            </label>
+            <div class="file-list" id="fileList">
+              <p class="empty-state">还没有选择文件</p>
+            </div>
+            <div class="action-row">
+              <button class="button button-primary" id="submitOrderBtn" type="button">提交订单并上传到服务器</button>
+              <a class="button button-secondary" href="admin.html">查看后台接单页</a>
+            </div>
+            <div class="status-box" id="orderMessage">等待提交订单</div>
+          </div>
+
+          <aside class="glass-panel order-panel reveal">
+            <div class="panel-head">
+              <h3>订单摘要</h3>
+              <span>接单页右侧固定信息区</span>
+            </div>
+            <div class="summary-card">
+              <div>
+                <span>项目</span>
+                <strong id="summaryProject">待填写</strong>
+              </div>
+              <div>
+                <span>审核重点</span>
+                <strong id="summaryFocus">全面体检</strong>
+              </div>
+              <div>
+                <span>交付时效</span>
+                <strong id="summaryDelivery">24 小时标准交付</strong>
+              </div>
+              <div>
+                <span>已选文件</span>
+                <strong id="summaryFiles">0 个</strong>
+              </div>
+              <div>
+                <span>预计价格</span>
+                <strong id="summaryPrice">￥699</strong>
+              </div>
+            </div>
+            <ul class="trust-list">
+              <li>默认签署保密承诺，不公开客户图纸</li>
+              <li>支持一次整改说明答疑</li>
+              <li>可按模块拆分报价，适合学生和初创团队</li>
+            </ul>
+            <a class="button button-primary full" id="payNowLink" href="payment.html">进入收费窗口</a>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section pricing" id="pricing">
+        <div class="section-heading reveal">
+          <p class="eyebrow">收费窗口</p>
+          <h2>在线透明报价，提交后直接进入支付页面</h2>
+        </div>
+        <div class="panel-grid pricing-grid">
+          <div class="glass-panel reveal">
+            <div class="panel-head">
+              <h3>费用计算器</h3>
+              <span>支持基础自动估价</span>
+            </div>
+            <div class="form-grid">
+              <label>
+                <span>服务类型</span>
+                <select id="serviceType">
+                  <option value="schematic">原理图审核</option>
+                  <option value="pcb">PCB 审核</option>
+                  <option value="combo">原理图 + PCB 套餐</option>
+                </select>
+              </label>
+              <label>
+                <span>板层数量</span>
+                <select id="layerCount">
+                  <option value="2">2 层</option>
+                  <option value="4">4 层</option>
+                  <option value="6">6 层</option>
+                  <option value="8">8 层及以上</option>
+                </select>
+              </label>
+              <label>
+                <span>复杂度</span>
+                <select id="complexity">
+                  <option value="basic">基础功能板</option>
+                  <option value="mid">中等复杂度</option>
+                  <option value="high">高速 / 电源 / 多接口复杂板</option>
+                </select>
+              </label>
+              <label>
+                <span>交付速度</span>
+                <select id="speed">
+                  <option value="standard">标准</option>
+                  <option value="rush">加急</option>
+                </select>
+              </label>
+            </div>
+            <div class="price-box">
+              <p>参考报价</p>
+              <strong id="priceValue">￥699</strong>
+              <span id="priceHint">适合基础原理图审核</span>
+            </div>
+            <a class="button button-primary full" id="paymentEntryLink" href="payment.html">确认并进入支付</a>
+          </div>
+
+          <div class="glass-panel reveal">
+            <div class="panel-head">
+              <h3>支付与交付说明</h3>
+              <span>网站内收费窗口建议</span>
+            </div>
+            <div class="payment-card">
+              <div class="payment-method">
+                <span>支持方式</span>
+                <strong>微信 / 支付宝 / 对公转账</strong>
+              </div>
+              <div class="payment-method">
+                <span>付款节点</span>
+                <strong>下单预付 50%，交付报告后结清</strong>
+              </div>
+              <div class="payment-method">
+                <span>附加服务</span>
+                <strong>改版复审、会议讲解、批量项目月度合作</strong>
+              </div>
+            </div>
+            <div class="mini-note">当前版本的支付为站内登记流程，适合先发布验证业务。后续可以接入真实支付接口。</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section review" id="review">
+        <div class="section-heading reveal">
+          <p class="eyebrow">评审改进窗口</p>
+          <h2>让客户看到你不只是指出问题，还能推动问题闭环</h2>
+        </div>
+        <div class="review-layout">
+          <div class="glass-panel review-board reveal">
+            <div class="panel-head">
+              <h3>评审问题看板</h3>
+              <span>模拟你交付给客户的改进清单</span>
+            </div>
+            <div class="issue-list">
+              <article class="issue high">
+                <header>
+                  <strong>P1 高风险</strong>
+                  <span>电源完整性</span>
+                </header>
+                <p>DC-DC输入与MCU模拟地共回流，可能导致采样噪声偏大。</p>
+              </article>
+              <article class="issue medium">
+                <header>
+                  <strong>P2 中风险</strong>
+                  <span>布局布线</span>
+                </header>
+                <p>USB差分对未做长度约束，且过孔切换次数偏多，存在眼图恶化风险。</p>
+              </article>
+              <article class="issue low">
+                <header>
+                  <strong>P3 优化项</strong>
+                  <span>可制造性</span>
+                </header>
+                <p>丝印被焊盘覆盖，测试点命名不统一，建议在试产前统一规范。</p>
+              </article>
+            </div>
+          </div>
+          <div class="glass-panel review-output reveal">
+            <div class="panel-head">
+              <h3>交付内容</h3>
+              <span>比单纯“给意见”更完整</span>
+            </div>
+            <ul class="deliverables">
+              <li>问题截图标注版 PDF</li>
+              <li>风险等级与修改优先级</li>
+              <li>逐条整改建议说明</li>
+              <li>适合初级工程师学习的原因分析</li>
+              <li>必要时可追加 1 次复核</li>
+            </ul>
+            <a class="button button-secondary full" href="admin.html">查看接单后台</a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

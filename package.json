@@ -1,0 +1,15 @@
+{
+  "name": "pcb-review-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PCB schematic and layout review website for order intake, uploads, payment logging, and admin dashboard.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "check": "node --check server.js && node --check script.js && node --check auth.js && node --check payment.js && node --check admin.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

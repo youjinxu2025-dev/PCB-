@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>支付入口 | PCB审图工坊</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell inner-shell">
+    <header class="topbar">
+      <a class="brand" href="index.html">
+        <span class="brand-badge">PCB</span>
+        <span>
+          <strong>审图工坊</strong>
+          <small>支付入口</small>
+        </span>
+      </a>
+      <nav class="nav">
+        <a href="index.html">前台首页</a>
+        <a href="admin.html">后台管理</a>
+        <a href="auth.html">登录 / 注册</a>
+      </nav>
+    </header>
+
+    <main class="section">
+      <div class="section-heading reveal visible">
+        <p class="eyebrow">支付中心</p>
+        <h2>录入付款信息，后台自动更新订单状态</h2>
+      </div>
+      <div class="panel-grid payment-page">
+        <section class="glass-panel reveal visible">
+          <div class="panel-head">
+            <h3>订单信息</h3>
+            <span>支持从首页自动带入订单号</span>
+          </div>
+          <div class="form-grid">
+            <label>
+              <span>订单号</span>
+              <input id="orderId" type="text" placeholder="例如：PCB-20260323-001">
+            </label>
+            <label>
+              <span>付款人姓名</span>
+              <input id="payerName" type="text" placeholder="填写客户名称">
+            </label>
+            <label>
+              <span>支付方式</span>
+              <select id="payMethod">
+                <option value="微信支付">微信支付</option>
+                <option value="支付宝">支付宝</option>
+                <option value="对公转账">对公转账</option>
+              </select>
+            </label>
+            <label>
+              <span>支付金额</span>
+              <input id="payAmount" type="number" min="0" step="1" placeholder="例如：699">
+            </label>
+          </div>
+          <label>
+            <span>付款备注</span>
+            <textarea id="payNote" rows="4" placeholder="例如：已支付预付款，尾号 4821"></textarea>
+          </label>
+          <div class="action-row">
+            <button class="button button-primary" id="paySubmitBtn" type="button">提交付款记录</button>
+            <a class="button button-secondary" href="admin.html">去后台查看状态</a>
+          </div>
+          <div class="status-box" id="payMessage">等待录入付款记录</div>
+        </section>
+
+        <aside class="glass-panel reveal visible">
+          <div class="panel-head">
+            <h3>支付说明</h3>
+            <span>适合作为真实支付页原型</span>
+          </div>
+          <div class="payment-card">
+            <div class="payment-method">
+              <span>当前流程</span>
+              <strong>提交订单后登记付款，后台实时更新状态</strong>
+            </div>
+            <div class="payment-method">
+              <span>建议商用升级</span>
+              <strong>后续接入微信支付商户、支付宝当面付或二维码收款</strong>
+            </div>
+            <div class="payment-method">
+              <span>当前用途</span>
+              <strong>这版适合先快速上线验证业务</strong>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <script src="payment.js"></script>
+</body>
+</html>

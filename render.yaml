@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: pcb-review-studio
+    runtime: node
+    plan: free
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: STORAGE_DIR
+        value: /var/data/pcb-review
+    disk:
+      name: pcb-review-storage
+      mountPath: /var/data
+      sizeGB: 1

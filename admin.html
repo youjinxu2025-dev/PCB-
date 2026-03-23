@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>后台管理 | PCB审图工坊</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell inner-shell">
+    <header class="topbar">
+      <a class="brand" href="index.html">
+        <span class="brand-badge">PCB</span>
+        <span>
+          <strong>审图工坊</strong>
+          <small>后台接单管理</small>
+        </span>
+      </a>
+      <nav class="nav">
+        <a href="index.html">前台首页</a>
+        <a href="payment.html">支付入口</a>
+        <a href="auth.html">登录 / 注册</a>
+      </nav>
+      <button class="button button-primary" id="refreshBtn" type="button">刷新数据</button>
+    </header>
+
+    <main class="section">
+      <div class="section-heading reveal visible">
+        <p class="eyebrow">管理后台</p>
+        <h2>查看订单、付款和上传文件摘要</h2>
+      </div>
+
+      <section class="stats-grid">
+        <article class="glass-panel stat-card reveal visible">
+          <span>总订单数</span>
+          <strong id="statOrders">0</strong>
+        </article>
+        <article class="glass-panel stat-card reveal visible">
+          <span>已付款订单</span>
+          <strong id="statPaid">0</strong>
+        </article>
+        <article class="glass-panel stat-card reveal visible">
+          <span>待审核订单</span>
+          <strong id="statPending">0</strong>
+        </article>
+        <article class="glass-panel stat-card reveal visible">
+          <span>累计收款</span>
+          <strong id="statRevenue">￥0</strong>
+        </article>
+      </section>
+
+      <section class="panel-grid admin-grid">
+        <div class="glass-panel reveal visible">
+          <div class="panel-head">
+            <h3>订单列表</h3>
+            <span>接单后台核心视图</span>
+          </div>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>订单号</th>
+                  <th>账号</th>
+                  <th>项目</th>
+                  <th>联系人</th>
+                  <th>报价</th>
+                  <th>支付状态</th>
+                  <th>文件数</th>
+                </tr>
+              </thead>
+              <tbody id="ordersBody">
+                <tr>
+                  <td colspan="7">暂无订单数据</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <aside class="glass-panel reveal visible">
+          <div class="panel-head">
+            <h3>付款记录</h3>
+            <span>最新提交优先显示</span>
+          </div>
+          <div class="admin-list" id="paymentsList">
+            <p class="empty-state">暂无付款记录</p>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
