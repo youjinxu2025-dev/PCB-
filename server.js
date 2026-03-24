@@ -16,6 +16,15 @@ const MAX_BODY_SIZE = 80 * 1024 * 1024;
 const SMS_CODE_TTL = 5 * 60 * 1000;
 const smsCodeStore = new Map();
 
+const SMS_PROVIDER = String(process.env.SMS_PROVIDER || "demo").toLowerCase();
+const ALIYUN_ACCESS_KEY_ID = process.env.ALIYUN_ACCESS_KEY_ID || "";
+const ALIYUN_ACCESS_KEY_SECRET = process.env.ALIYUN_ACCESS_KEY_SECRET || "";
+const ALIYUN_SMS_ENDPOINT = process.env.ALIYUN_SMS_ENDPOINT || "https://dysmsapi.ap-southeast-1.aliyuncs.com";
+const ALIYUN_SMS_REGION_ID = process.env.ALIYUN_SMS_REGION_ID || "ap-southeast-1";
+const ALIYUN_SMS_SIGN_NAME = process.env.ALIYUN_SMS_SIGN_NAME || "";
+const ALIYUN_SMS_TEMPLATE_CODE_REGISTER = process.env.ALIYUN_SMS_TEMPLATE_CODE_REGISTER || "";
+const ALIYUN_SMS_TEMPLATE_CODE_RESET = process.env.ALIYUN_SMS_TEMPLATE_CODE_RESET || "";
+
 function ensureStorage() {
   fs.mkdirSync(DATA_DIR, { recursive: true });
   fs.mkdirSync(UPLOAD_DIR, { recursive: true });
@@ -149,26 +158,104 @@ function createSmsCode() {
   return String(Math.floor(100000 + Math.random() * 900000));
 }
 
-function setSmsCode(phone) {
+function getTemplateCodeByPurpose(purpose) {
+  return purpose === "reset"
+    ? ALIYUN_SMS_TEMPLATE_CODE_RESET
+    : ALIYUN_SMS_TEMPLATE_CODE_REGISTER;
+}
+
+async function sendAliyunSms(phone, code, purpose) {
+  if (!ALIYUN_ACCESS_KEY_ID || !ALIYUN_ACCESS_KEY_SECRET || !ALIYUN_SMS_SIGN_NAME) {
+    throw new Error("阿里云短信配置不完整，请补齐 AccessKey、签名和模板编号");
+  }
+
+  const templateCode = getTemplateCodeByPurpose(purpose);
+  if (!templateCode) {
+    throw new Error(`未配置 ${purpose} 场景的阿里云短信模板编号`);
+  }
+
+  let Core;
+  try {
+    Core = require("@alicloud/pop-core");
+  } catch {
+    throw new Error("缺少 @alicloud/pop-core 依赖，请先执行 npm install");
+  }
+
+  const client = new Core({
+    accessKeyId: ALIYUN_ACCESS_KEY_ID,
+    accessKeySecret: ALIYUN_ACCESS_KEY_SECRET,
+    endpoint: ALIYUN_SMS_ENDPOINT,
+    apiVersion: "2018-05-01"
+  });
+
+  const params = {
+    RegionId: ALIYUN_SMS_REGION_ID,
+    To: `86${phone}`,
+    From: ALIYUN_SMS_SIGN_NAME,
+    TemplateCode: templateCode,
+    TemplateParam: JSON.stringify({ code })
+  };
+
+  const requestOption = {
+    method: "POST",
+    formatParams: false
+  };
+
+  const result = await client.request("SendMessageWithTemplate", params, requestOption);
+  const responseCode = result?.ResponseCode || result?.Code || "";
+  if (responseCode !== "OK") {
+    const message = result?.ResponseDescription || result?.Message || "阿里云短信发送失败";
+    throw new Error(message);
+  }
+
+  return {
+    provider: "aliyun",
+    requestId: result?.RequestId || ""
+  };
+}
+
+async function dispatchSmsCode(phone, code, purpose) {
+  if (SMS_PROVIDER === "aliyun") {
+    const result = await sendAliyunSms(phone, code, purpose);
+    return {
+      provider: result.provider,
+      requestId: result.requestId,
+      demoCode: undefined
+    };
+  }
+
+  return {
+    provider: "demo",
+    requestId: `DEMO-${Date.now()}`,
+    demoCode: code
+  };
+}
+
+function setSmsCode(phone, purpose, delivery) {
   const normalizedPhone = normalizePhone(phone);
-  const code = createSmsCode();
   smsCodeStore.set(normalizedPhone, {
-    code,
+    code: delivery.code,
+    purpose,
+    provider: delivery.provider,
+    requestId: delivery.requestId,
     expiresAt: Date.now() + SMS_CODE_TTL
   });
-  return code;
 }
 
 function clearSmsCode(phone) {
   smsCodeStore.delete(normalizePhone(phone));
 }
 
-function verifySmsCode(phone, code) {
+function verifySmsCode(phone, code, purpose) {
   const normalizedPhone = normalizePhone(phone);
   const session = smsCodeStore.get(normalizedPhone);
 
   if (!session) {
     return { ok: false, error: "请先获取短信验证码" };
+  }
+
+  if (session.purpose !== purpose) {
+    return { ok: false, error: "验证码场景不匹配，请重新获取" };
   }
 
   if (Date.now() > session.expiresAt) {
@@ -193,6 +280,7 @@ async function handleSendSmsCode(req, res) {
   try {
     const payload = parseJsonBody(await getRequestBody(req));
     const phone = normalizePhone(payload.phone);
+    const purpose = payload.purpose === "reset" ? "reset" : "register";
 
     if (!isValidChinaPhone(phone)) {
       sendJson(res, 400, { error: "请输入有效的 11 位手机号" });
@@ -200,17 +288,29 @@ async function handleSendSmsCode(req, res) {
     }
 
     const users = readJson(USERS_FILE);
-    if (payload.purpose === "register" && findUserByPhone(users, phone)) {
+    const user = findUserByPhone(users, phone);
+    if (purpose === "register" && user) {
       sendJson(res, 409, { error: "该手机号已注册，请直接登录" });
       return;
     }
 
-    const code = setSmsCode(phone);
+    if (purpose === "reset" && !user) {
+      sendJson(res, 404, { error: "该手机号尚未注册，无法找回密码" });
+      return;
+    }
+
+    const code = createSmsCode();
+    const delivery = await dispatchSmsCode(phone, code, purpose);
+    setSmsCode(phone, purpose, { ...delivery, code });
+
     sendJson(res, 200, {
       ok: true,
       message: "验证码已发送",
       phone,
-      demoCode: code,
+      purpose,
+      provider: delivery.provider,
+      requestId: delivery.requestId,
+      demoCode: delivery.demoCode,
       expiresInSeconds: 300
     });
   } catch (error) {
@@ -242,7 +342,7 @@ async function handleRegister(req, res) {
       return;
     }
 
-    const verification = verifySmsCode(phone, code);
+    const verification = verifySmsCode(phone, code, "register");
     if (!verification.ok) {
       sendJson(res, 400, { error: verification.error });
       return;
@@ -283,6 +383,48 @@ async function handleLogin(req, res) {
     sendJson(res, 200, { ok: true, user: publicUser(user) });
   } catch (error) {
     sendJson(res, 500, { error: error.message || "登录失败" });
+  }
+}
+
+async function handleResetPassword(req, res) {
+  try {
+    const payload = parseJsonBody(await getRequestBody(req));
+    const phone = normalizePhone(payload.phone);
+    const code = String(payload.code || "").trim();
+    const password = String(payload.password || "");
+
+    if (!isValidChinaPhone(phone) || !code || !password) {
+      sendJson(res, 400, { error: "请填写手机号、验证码和新密码" });
+      return;
+    }
+
+    if (password.length < 6) {
+      sendJson(res, 400, { error: "新密码至少需要 6 位" });
+      return;
+    }
+
+    const verification = verifySmsCode(phone, code, "reset");
+    if (!verification.ok) {
+      sendJson(res, 400, { error: verification.error });
+      return;
+    }
+
+    const users = readJson(USERS_FILE);
+    const user = findUserByPhone(users, phone);
+    if (!user) {
+      sendJson(res, 404, { error: "该手机号尚未注册" });
+      return;
+    }
+
+    const passwordSalt = createSalt();
+    user.passwordSalt = passwordSalt;
+    user.passwordHash = hashPassword(password, passwordSalt);
+    delete user.password;
+    writeJson(USERS_FILE, users);
+
+    sendJson(res, 200, { ok: true, user: publicUser(user) });
+  } catch (error) {
+    sendJson(res, 500, { error: error.message || "重置密码失败" });
   }
 }
 
@@ -402,7 +544,8 @@ function handleHealth(res) {
     ok: true,
     service: "pcb-review-studio",
     time: new Date().toISOString(),
-    storageRoot: STORAGE_ROOT
+    storageRoot: STORAGE_ROOT,
+    smsProvider: SMS_PROVIDER
   });
 }
 
@@ -427,6 +570,11 @@ function handleRoute(req, res) {
 
   if (req.method === "POST" && pathname === "/api/login") {
     handleLogin(req, res);
+    return;
+  }
+
+  if (req.method === "POST" && pathname === "/api/reset-password") {
+    handleResetPassword(req, res);
     return;
   }
 

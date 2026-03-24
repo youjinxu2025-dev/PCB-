@@ -777,6 +777,16 @@ textarea {
   margin-top: 18px;
 }
 
+.auth-divider {
+  height: 1px;
+  margin: 22px 0;
+  background: rgba(81, 63, 42, 0.12);
+}
+
+.auth-subhead {
+  margin-bottom: 14px;
+}
+
 .inner-shell {
   padding-bottom: 40px;
 }

@@ -6,15 +6,23 @@
   registerPasswordConfirm: document.querySelector("#registerPasswordConfirm"),
   loginPhone: document.querySelector("#loginPhone"),
   loginPassword: document.querySelector("#loginPassword"),
+  resetPhone: document.querySelector("#resetPhone"),
+  resetCode: document.querySelector("#resetCode"),
+  resetPassword: document.querySelector("#resetPassword"),
+  resetPasswordConfirm: document.querySelector("#resetPasswordConfirm"),
   sendCodeBtn: document.querySelector("#sendCodeBtn"),
+  sendResetCodeBtn: document.querySelector("#sendResetCodeBtn"),
   registerBtn: document.querySelector("#registerBtn"),
   loginBtn: document.querySelector("#loginBtn"),
   logoutBtn: document.querySelector("#logoutBtn"),
+  resetPasswordBtn: document.querySelector("#resetPasswordBtn"),
   authMessage: document.querySelector("#authMessage")
 };
 
-let smsCountdown = 0;
-let countdownTimer = null;
+const countdownState = {
+  register: { seconds: 0, timer: null, button: authEls.sendCodeBtn, idleText: "获取验证码" },
+  reset: { seconds: 0, timer: null, button: authEls.sendResetCodeBtn, idleText: "发送找回码" }
+};
 
 function setAuthMessage(text, type = "info") {
   authEls.authMessage.textContent = text;
@@ -33,47 +41,50 @@ function isServerMode() {
   return window.location.protocol.startsWith("http");
 }
 
-function updateSendCodeButton() {
-  if (smsCountdown > 0) {
-    authEls.sendCodeBtn.disabled = true;
-    authEls.sendCodeBtn.textContent = `${smsCountdown}s 后重发`;
+function updateCountdownButton(type) {
+  const state = countdownState[type];
+  if (state.seconds > 0) {
+    state.button.disabled = true;
+    state.button.textContent = `${state.seconds}s 后重发`;
     return;
   }
 
-  authEls.sendCodeBtn.disabled = false;
-  authEls.sendCodeBtn.textContent = "获取验证码";
+  state.button.disabled = false;
+  state.button.textContent = state.idleText;
 }
 
-function startCountdown(seconds = 60) {
-  smsCountdown = seconds;
-  updateSendCodeButton();
+function startCountdown(type, seconds = 60) {
+  const state = countdownState[type];
+  state.seconds = seconds;
+  updateCountdownButton(type);
 
-  if (countdownTimer) {
-    clearInterval(countdownTimer);
+  if (state.timer) {
+    clearInterval(state.timer);
   }
 
-  countdownTimer = window.setInterval(() => {
-    smsCountdown -= 1;
-    if (smsCountdown <= 0) {
-      smsCountdown = 0;
-      clearInterval(countdownTimer);
-      countdownTimer = null;
+  state.timer = window.setInterval(() => {
+    state.seconds -= 1;
+    if (state.seconds <= 0) {
+      state.seconds = 0;
+      clearInterval(state.timer);
+      state.timer = null;
     }
-    updateSendCodeButton();
+    updateCountdownButton(type);
   }, 1000);
 }
 
-async function sendCode() {
+async function sendSmsCode(type) {
   if (!isServerMode()) {
-    setAuthMessage("请先通过线上地址访问网站，再使用验证码注册功能。", "error");
+    setAuthMessage("请先通过线上地址访问网站，再使用短信验证功能。", "error");
     return;
   }
 
+  const isRegister = type === "register";
+  const phone = normalizePhone(isRegister ? authEls.registerPhone.value : authEls.resetPhone.value);
   const name = authEls.registerName.value.trim();
-  const phone = normalizePhone(authEls.registerPhone.value);
 
-  if (!name) {
-    setAuthMessage("请先填写姓名或称呼。", "error");
+  if (isRegister && !name) {
+    setAuthMessage("注册前请先填写姓名或称呼。", "error");
     return;
   }
 
@@ -82,14 +93,14 @@ async function sendCode() {
     return;
   }
 
-  authEls.sendCodeBtn.disabled = true;
-  setAuthMessage("正在生成短信验证码...", "loading");
+  countdownState[type].button.disabled = true;
+  setAuthMessage("正在发送短信验证码...", "loading");
 
   try {
     const response = await fetch("/api/sms-code", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone, purpose: "register" })
+      body: JSON.stringify({ phone, purpose: type })
     });
 
     const data = await response.json();
@@ -97,14 +108,12 @@ async function sendCode() {
       throw new Error(data.error || "验证码发送失败");
     }
 
-    startCountdown(60);
-    const demoSuffix = data.demoCode
-      ? ` 当前演示环境验证码：${data.demoCode}。`
-      : "";
+    startCountdown(type, 60);
+    const demoSuffix = data.demoCode ? ` 当前演示环境验证码：${data.demoCode}。` : "";
     setAuthMessage(`验证码已发送到手机号 ${phone}。${demoSuffix}`, "success");
   } catch (error) {
-    smsCountdown = 0;
-    updateSendCodeButton();
+    countdownState[type].seconds = 0;
+    updateCountdownButton(type);
     setAuthMessage(`验证码发送失败：${error.message}`, "error");
   }
 }
@@ -188,13 +197,60 @@ async function login() {
   }
 }
 
+async function resetPassword() {
+  if (!isServerMode()) {
+    setAuthMessage("请先通过线上地址访问网站，再使用找回密码功能。", "error");
+    return;
+  }
+
+  const phone = normalizePhone(authEls.resetPhone.value);
+  const code = authEls.resetCode.value.trim();
+  const password = authEls.resetPassword.value.trim();
+  const passwordConfirm = authEls.resetPasswordConfirm.value.trim();
+
+  if (!/^1\d{10}$/.test(phone) || !code || !password || !passwordConfirm) {
+    setAuthMessage("请完整填写手机号、验证码和新密码。", "error");
+    return;
+  }
+
+  if (password.length < 6) {
+    setAuthMessage("新密码至少需要 6 位。", "error");
+    return;
+  }
+
+  if (password !== passwordConfirm) {
+    setAuthMessage("两次输入的新密码不一致。", "error");
+    return;
+  }
+
+  try {
+    const response = await fetch("/api/reset-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone, code, password })
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.error || "重置密码失败");
+    }
+
+    setAuthMessage(`密码已重置成功，现在可以用手机号 ${phone} 重新登录。`, "success");
+  } catch (error) {
+    setAuthMessage(`重置密码失败：${error.message}`, "error");
+  }
+}
+
 function logout() {
   localStorage.removeItem("pcbCurrentUser");
   setAuthMessage("已退出登录。", "info");
 }
 
-authEls.sendCodeBtn.addEventListener("click", sendCode);
+authEls.sendCodeBtn.addEventListener("click", () => sendSmsCode("register"));
+authEls.sendResetCodeBtn.addEventListener("click", () => sendSmsCode("reset"));
 authEls.registerBtn.addEventListener("click", register);
 authEls.loginBtn.addEventListener("click", login);
 authEls.logoutBtn.addEventListener("click", logout);
-updateSendCodeButton();
+authEls.resetPasswordBtn.addEventListener("click", resetPassword);
+updateCountdownButton("register");
+updateCountdownButton("reset");

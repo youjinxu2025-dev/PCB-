@@ -32,7 +32,7 @@
     <main class="section">
       <div class="section-heading reveal visible">
         <p class="eyebrow">账号中心</p>
-        <h2>用手机号完成注册会更顺手。先收验证码，再设置密码，后面直接登录就能继续下单和跟进项目。</h2>
+        <h2>用手机号完成注册、登录和密码找回。注册先收验证码，再设置密码，后面直接登录就能继续下单和跟进项目。</h2>
       </div>
 
       <div class="panel-grid auth-grid">
@@ -74,7 +74,7 @@
 
           <ul class="card-list">
             <li>注册完成后可直接下单、上传工程文件、提交付款并查看订单状态。</li>
-            <li>当前版本已跑通短信验证流程，正式上线时可替换成阿里云短信服务。</li>
+            <li>当前版本默认带演示短信模式，正式上线时可切换阿里云短信发送。</li>
           </ul>
 
           <button class="button button-primary full" id="registerBtn" type="button">验证并注册账号</button>
@@ -106,18 +106,44 @@
             登录成功后，首页右上角会显示当前账号状态。你提交订单时，系统会自动绑定当前手机号账号。
           </div>
 
-          <div class="checklist-card auth-tips">
-            <h3>注册流程</h3>
-            <ul class="card-list">
-              <li>第一步：输入姓名和手机号，点击获取验证码。</li>
-              <li>第二步：输入验证码，设置密码并提交注册。</li>
-              <li>第三步：以后直接用手机号和密码登录，无需重复填写资料。</li>
-            </ul>
+          <div class="auth-divider"></div>
+
+          <div class="panel-head auth-subhead">
+            <h3>忘记密码</h3>
+            <span>通过短信验证码重设登录密码</span>
+          </div>
+
+          <div class="form-grid">
+            <label>
+              <span>手机号</span>
+              <input id="resetPhone" type="tel" placeholder="请输入已注册手机号">
+            </label>
+            <label>
+              <span>短信验证码</span>
+              <input id="resetCode" type="text" inputmode="numeric" maxlength="6" placeholder="请输入找回验证码">
+            </label>
+          </div>
+
+          <div class="auth-inline">
+            <label class="auth-inline-field">
+              <span>新密码</span>
+              <input id="resetPassword" type="password" placeholder="请输入新密码">
+            </label>
+            <button class="button button-secondary" id="sendResetCodeBtn" type="button">发送找回码</button>
+          </div>
+
+          <label>
+            <span>确认新密码</span>
+            <input id="resetPasswordConfirm" type="password" placeholder="再次输入新密码">
+          </label>
+
+          <div class="action-row">
+            <button class="button button-primary" id="resetPasswordBtn" type="button">重置密码</button>
           </div>
         </section>
       </div>
 
-      <div class="status-box auth-status" id="authMessage">等待发送验证码、注册或登录。</div>
+      <div class="status-box auth-status" id="authMessage">等待发送验证码、注册、登录或找回密码。</div>
     </main>
   </div>
 

@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "pcb-review-studio",
   "version": "1.0.0",
   "private": true,
@@ -11,5 +11,8 @@
   },
   "engines": {
     "node": ">=20"
+  },
+  "dependencies": {
+    "@alicloud/pop-core": "^1.7.13"
   }
 }
