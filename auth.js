@@ -16,7 +16,9 @@
   loginBtn: document.querySelector("#loginBtn"),
   logoutBtn: document.querySelector("#logoutBtn"),
   resetPasswordBtn: document.querySelector("#resetPasswordBtn"),
-  authMessage: document.querySelector("#authMessage")
+  authMessage: document.querySelector("#authMessage"),
+  modeButtons: document.querySelectorAll(".auth-mode-btn"),
+  panes: document.querySelectorAll(".auth-pane")
 };
 
 const countdownState = {
@@ -39,6 +41,16 @@ function normalizePhone(phone) {
 
 function isServerMode() {
   return window.location.protocol.startsWith("http");
+}
+
+function switchMode(mode) {
+  authEls.modeButtons.forEach((button) => {
+    button.classList.toggle("active", button.dataset.mode === mode);
+  });
+
+  authEls.panes.forEach((pane) => {
+    pane.classList.toggle("active", pane.id === `${mode}Pane`);
+  });
 }
 
 function updateCountdownButton(type) {
@@ -159,6 +171,7 @@ async function register() {
 
     saveCurrentUser(data.user);
     setAuthMessage(`注册成功，当前已登录账号：${data.user.name} / ${data.user.phone}`, "success");
+    switchMode("login");
   } catch (error) {
     setAuthMessage(`注册失败：${error.message}`, "error");
   }
@@ -236,6 +249,9 @@ async function resetPassword() {
     }
 
     setAuthMessage(`密码已重置成功，现在可以用手机号 ${phone} 重新登录。`, "success");
+    authEls.loginPhone.value = phone;
+    authEls.loginPassword.value = password;
+    switchMode("login");
   } catch (error) {
     setAuthMessage(`重置密码失败：${error.message}`, "error");
   }
@@ -246,6 +262,9 @@ function logout() {
   setAuthMessage("已退出登录。", "info");
 }
 
+authEls.modeButtons.forEach((button) => {
+  button.addEventListener("click", () => switchMode(button.dataset.mode));
+});
 authEls.sendCodeBtn.addEventListener("click", () => sendSmsCode("register"));
 authEls.sendResetCodeBtn.addEventListener("click", () => sendSmsCode("reset"));
 authEls.registerBtn.addEventListener("click", register);
@@ -254,3 +273,4 @@ authEls.logoutBtn.addEventListener("click", logout);
 authEls.resetPasswordBtn.addEventListener("click", resetPassword);
 updateCountdownButton("register");
 updateCountdownButton("reset");
+switchMode("login");

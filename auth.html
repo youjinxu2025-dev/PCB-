@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>手机号登录注册 | 审图工坊</title>
+  <title>账号中心 | 审图工坊</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -19,7 +19,7 @@
         <span class="brand-badge">PCB</span>
         <span>
           <strong>审图工坊</strong>
-          <small>手机号登录 / 注册</small>
+          <small>统一账号入口</small>
         </span>
       </a>
       <nav class="nav">
@@ -29,63 +29,24 @@
       </nav>
     </header>
 
-    <main class="section">
-      <div class="section-heading reveal visible">
+    <main class="section auth-shell">
+      <div class="section-heading reveal visible auth-center-head">
         <p class="eyebrow">账号中心</p>
-        <h2>用手机号完成注册、登录和密码找回。注册先收验证码，再设置密码，后面直接登录就能继续下单和跟进项目。</h2>
+        <h2>合成一个入口更清晰。一个卡片里完成登录、注册和找回密码，用户不容易走错。</h2>
       </div>
 
-      <div class="panel-grid auth-grid">
-        <section class="glass-panel reveal visible">
-          <div class="panel-head">
-            <h3>手机号注册</h3>
-            <span>适合第一次咨询和下单的新客户</span>
-          </div>
+      <section class="glass-panel auth-card reveal visible">
+        <div class="auth-mode-switch" role="tablist" aria-label="账号模式切换">
+          <button class="auth-mode-btn active" data-mode="login" type="button">密码登录</button>
+          <button class="auth-mode-btn" data-mode="register" type="button">手机注册</button>
+          <button class="auth-mode-btn" data-mode="reset" type="button">找回密码</button>
+        </div>
 
-          <div class="form-grid">
-            <label>
-              <span>姓名或称呼</span>
-              <input id="registerName" type="text" placeholder="例如：张工 / 李工 / 王经理">
-            </label>
-            <label>
-              <span>手机号</span>
-              <input id="registerPhone" type="tel" placeholder="请输入 11 位手机号">
-            </label>
-          </div>
-
-          <div class="auth-inline">
-            <label class="auth-inline-field">
-              <span>短信验证码</span>
-              <input id="registerCode" type="text" inputmode="numeric" maxlength="6" placeholder="请输入 6 位验证码">
-            </label>
-            <button class="button button-secondary" id="sendCodeBtn" type="button">获取验证码</button>
-          </div>
-
-          <div class="form-grid">
-            <label>
-              <span>设置登录密码</span>
-              <input id="registerPassword" type="password" placeholder="建议 6 位以上，便于后续直接登录">
-            </label>
-            <label>
-              <span>确认密码</span>
-              <input id="registerPasswordConfirm" type="password" placeholder="再次输入登录密码">
-            </label>
-          </div>
-
-          <ul class="card-list">
-            <li>注册完成后可直接下单、上传工程文件、提交付款并查看订单状态。</li>
-            <li>当前版本默认带演示短信模式，正式上线时可切换阿里云短信发送。</li>
-          </ul>
-
-          <button class="button button-primary full" id="registerBtn" type="button">验证并注册账号</button>
-        </section>
-
-        <section class="glass-panel reveal visible">
-          <div class="panel-head">
+        <div class="auth-pane active" id="loginPane">
+          <div class="panel-head auth-pane-head">
             <h3>密码登录</h3>
-            <span>已注册用户直接登录继续下单</span>
+            <span>已注册用户直接输入手机号和密码</span>
           </div>
-
           <div class="form-grid">
             <label>
               <span>手机号</span>
@@ -96,23 +57,61 @@
               <input id="loginPassword" type="password" placeholder="请输入登录密码">
             </label>
           </div>
-
           <div class="action-row">
             <button class="button button-primary" id="loginBtn" type="button">立即登录</button>
             <button class="button button-secondary" id="logoutBtn" type="button">退出登录</button>
           </div>
-
           <div class="mini-note">
-            登录成功后，首页右上角会显示当前账号状态。你提交订单时，系统会自动绑定当前手机号账号。
+            登录成功后，首页右上角会显示当前账号状态。提交订单时，系统会自动绑定当前手机号账号。
           </div>
+        </div>
 
-          <div class="auth-divider"></div>
+        <div class="auth-pane" id="registerPane">
+          <div class="panel-head auth-pane-head">
+            <h3>手机注册</h3>
+            <span>新客户先验证手机号，再设置登录密码</span>
+          </div>
+          <div class="form-grid">
+            <label>
+              <span>姓名或称呼</span>
+              <input id="registerName" type="text" placeholder="例如：张工 / 李工 / 王经理">
+            </label>
+            <label>
+              <span>手机号</span>
+              <input id="registerPhone" type="tel" placeholder="请输入 11 位手机号">
+            </label>
+          </div>
+          <div class="auth-inline">
+            <label class="auth-inline-field">
+              <span>短信验证码</span>
+              <input id="registerCode" type="text" inputmode="numeric" maxlength="6" placeholder="请输入 6 位验证码">
+            </label>
+            <button class="button button-secondary" id="sendCodeBtn" type="button">获取验证码</button>
+          </div>
+          <div class="form-grid">
+            <label>
+              <span>设置登录密码</span>
+              <input id="registerPassword" type="password" placeholder="建议 6 位以上，便于后续直接登录">
+            </label>
+            <label>
+              <span>确认密码</span>
+              <input id="registerPasswordConfirm" type="password" placeholder="再次输入登录密码">
+            </label>
+          </div>
+          <ul class="card-list compact-list">
+            <li>注册完成后可直接下单、上传工程文件、提交付款并查看订单状态。</li>
+            <li>当前版本默认带演示短信模式，正式上线时可切换阿里云短信发送。</li>
+          </ul>
+          <div class="action-row">
+            <button class="button button-primary" id="registerBtn" type="button">验证并注册账号</button>
+          </div>
+        </div>
 
-          <div class="panel-head auth-subhead">
-            <h3>忘记密码</h3>
+        <div class="auth-pane" id="resetPane">
+          <div class="panel-head auth-pane-head">
+            <h3>找回密码</h3>
             <span>通过短信验证码重设登录密码</span>
           </div>
-
           <div class="form-grid">
             <label>
               <span>手机号</span>
@@ -123,7 +122,6 @@
               <input id="resetCode" type="text" inputmode="numeric" maxlength="6" placeholder="请输入找回验证码">
             </label>
           </div>
-
           <div class="auth-inline">
             <label class="auth-inline-field">
               <span>新密码</span>
@@ -131,19 +129,17 @@
             </label>
             <button class="button button-secondary" id="sendResetCodeBtn" type="button">发送找回码</button>
           </div>
-
           <label>
             <span>确认新密码</span>
             <input id="resetPasswordConfirm" type="password" placeholder="再次输入新密码">
           </label>
-
           <div class="action-row">
             <button class="button button-primary" id="resetPasswordBtn" type="button">重置密码</button>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
 
-      <div class="status-box auth-status" id="authMessage">等待发送验证码、注册、登录或找回密码。</div>
+      <div class="status-box auth-status" id="authMessage">等待登录、注册或找回密码。</div>
     </main>
   </div>
 

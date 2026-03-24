@@ -539,6 +539,34 @@ function handleDashboard(res) {
   sendJson(res, 200, { stats, orders, payments });
 }
 
+function handleMyOrders(req, res, requestUrl) {
+  const accountId = String(requestUrl.searchParams.get("accountId") || "").trim();
+
+  if (!accountId) {
+    sendJson(res, 400, { error: "缺少账号标识" });
+    return;
+  }
+
+  const orders = readJson(ORDERS_FILE).filter((order) => order.accountId === accountId);
+  const payments = readJson(PAYMENTS_FILE);
+  const orderIds = new Set(orders.map((order) => order.id));
+  const relatedPayments = payments.filter((payment) => orderIds.has(payment.orderId));
+
+  const stats = {
+    totalOrders: orders.length,
+    paidOrders: orders.filter((order) => order.paymentStatus !== "待付款").length,
+    pendingReview: orders.filter((order) => order.reviewStatus === "待审核").length,
+    totalSpent: relatedPayments.reduce((sum, item) => sum + Number(item.amount || 0), 0)
+  };
+
+  sendJson(res, 200, {
+    ok: true,
+    stats,
+    orders,
+    payments: relatedPayments
+  });
+}
+
 function handleHealth(res) {
   sendJson(res, 200, {
     ok: true,
@@ -590,6 +618,11 @@ function handleRoute(req, res) {
 
   if (req.method === "GET" && pathname === "/api/dashboard") {
     handleDashboard(res);
+    return;
+  }
+
+  if (req.method === "GET" && pathname === "/api/my-orders") {
+    handleMyOrders(req, res, requestUrl);
     return;
   }
 
