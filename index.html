@@ -1,13 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>审图工坊 | 原理图与PCB在线审核接单平台</title>
-  <meta
-    name="description"
-    content="为初级电子工程师、小团队和硬件创业项目提供原理图审核、PCB审核、打样前复核、整改建议与在线报价服务。"
-  >
+  <title>审图工坊 | 原理图与 PCB 在线审核</title>
+  <meta name="description" content="面向初级工程师、小团队和硬件项目的原理图与 PCB 在线审核服务，支持上传文件、在线估价、下单和付款登记。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -23,18 +20,16 @@
         <span class="brand-badge">PCB</span>
         <span>
           <strong>审图工坊</strong>
-          <small>原理图 / PCB 专业审核接单</small>
+          <small>原理图 / PCB 在线审核</small>
         </span>
       </a>
       <nav class="nav">
         <a href="#services">服务</a>
-        <a href="#pricing">收费</a>
-        <a href="#cases">案例</a>
+        <a href="#pricing">价格</a>
         <a href="#upload">下单</a>
         <a href="#faq">常见问题</a>
         <a href="payment.html">支付</a>
-        <a href="admin.html">后台</a>
-        <a id="authLink" href="auth.html">登录 / 注册</a>
+        <a id="authLink" href="auth.html">账号中心</a>
       </nav>
       <div class="topbar-actions">
         <span class="user-badge" id="userBadge">未登录</span>
@@ -44,153 +39,106 @@
 
     <main>
       <section class="hero" id="hero">
-        <div class="hero-copy reveal">
-          <p class="eyebrow">电子工程师的线上审图工作台</p>
-          <h1>帮初级工程师把问题拦在打样前，把修改建议说到能落地</h1>
+        <div class="hero-copy reveal visible">
+          <p class="eyebrow">给打样前多一道把关</p>
+          <h1>帮你先看一遍原理图和 PCB，减少返板和低级错误</h1>
           <p class="hero-text">
-            面向个人工程师、小团队与硬件创业项目，提供原理图审核、PCB 审核、打样前复核、
-            评审改进建议与加急复核服务。你上传工程文件，我输出问题清单、风险等级、整改建议和复审意见。
+            你上传工程文件，我给出问题清单、风险等级和修改建议。页面只保留最关键的三件事：看服务、看价格、直接下单。
           </p>
           <div class="hero-actions">
-            <a class="button button-primary" href="#upload">上传设计文件</a>
-            <a class="button button-secondary" href="#pricing">先看收费标准</a>
+            <a class="button button-primary" href="#upload">上传文件下单</a>
+            <a class="button button-secondary" href="#pricing">先看参考价格</a>
           </div>
           <ul class="hero-metrics">
             <li>
               <strong>24h</strong>
-              <span>标准审核交付</span>
+              <span>标准交付</span>
             </li>
             <li>
               <strong>300+</strong>
-              <span>可检查规则项</span>
+              <span>检查项</span>
             </li>
             <li>
               <strong>1 对 1</strong>
-              <span>整改说明答疑</span>
+              <span>修改说明</span>
             </li>
           </ul>
         </div>
-        <div class="hero-panel reveal">
+
+        <div class="hero-panel reveal visible">
           <div class="signal-card">
-            <span class="signal-title">适合这些客户</span>
+            <span class="signal-title">适合这几类项目</span>
             <div class="signal-grid">
               <div>
-                <strong>初级硬件工程师</strong>
-                <p>需要有人帮忙审一遍，减少低级错误与返板风险。</p>
+                <strong>初级工程师</strong>
+                <p>需要有人帮你在出板前看一遍。</p>
               </div>
               <div>
-                <strong>小型研发团队</strong>
-                <p>没有专门资深审核角色，希望上线前补一道保险。</p>
+                <strong>小团队项目</strong>
+                <p>没有专职审核角色，先补一道保险。</p>
               </div>
               <div>
-                <strong>学生 / 练手机构</strong>
-                <p>不仅要知道哪里错，还要知道为什么错、怎么改。</p>
+                <strong>打样前复核</strong>
+                <p>重点排查回流、电源、封装和接口问题。</p>
               </div>
               <div>
-                <strong>项目救火需求</strong>
-                <p>打样前、试产前、客户验收前，需要快速复核与补救建议。</p>
+                <strong>问题定位</strong>
+                <p>已经怀疑某些模块有风险，想先确认。</p>
               </div>
             </div>
           </div>
-          <div class="diagnostic-card">
-            <div class="diagnostic-head">
-              <span>重点诊断方向</span>
-              <span class="live-dot">在线接单中</span>
-            </div>
-            <ul>
-              <li>电源完整性、去耦与回流路径</li>
-              <li>器件封装、焊盘、丝印与 BOM 匹配</li>
-              <li>差分、阻抗、时钟与高速接口检查</li>
-              <li>接口保护、地划分、EMC 风险提示</li>
-              <li>DFM / DFA 制造装配风险建议</li>
-            </ul>
+          <div class="mini-note">
+            默认按保密项目处理，不公开图纸、BOM 和客户资料。适合个人项目、接单项目和小批量验证阶段使用。
           </div>
         </div>
       </section>
 
       <section class="section" id="services">
-        <div class="section-heading reveal">
+        <div class="section-heading reveal visible">
           <p class="eyebrow">服务内容</p>
-          <h2>不只是帮你找错，而是帮你建立以后也能复用的审图思路</h2>
+          <h2>首页只保留 3 个服务入口，避免让客户先在页面里迷路</h2>
         </div>
-        <div class="service-grid">
-          <article class="service-card reveal">
+        <div class="package-grid">
+          <article class="glass-panel package-card reveal visible">
+            <p class="package-tag">原理图</p>
             <h3>原理图审核</h3>
-            <p>检查器件选型、接口定义、电源架构、保护电路、上下拉、时序逻辑与功能闭环。</p>
+            <strong>￥499 起</strong>
             <ul class="card-list">
-              <li>适合：设计刚完成、准备转 PCB 前</li>
-              <li>交付：问题清单 + 风险说明</li>
+              <li>看电源、接口、器件选型、上下拉和保护设计</li>
+              <li>适合：原理图刚画完，准备转 PCB</li>
             </ul>
           </article>
-          <article class="service-card reveal">
+          <article class="glass-panel package-card featured reveal visible">
+            <p class="package-tag">最常用</p>
             <h3>PCB 审核</h3>
-            <p>检查布局合理性、回流路径、地划分、布线规则、高速敏感走线、散热与可制造性。</p>
+            <strong>￥699 起</strong>
             <ul class="card-list">
-              <li>适合：PCB 已完成、准备输出 Gerber 前</li>
-              <li>交付：标注截图 + 修改建议</li>
+              <li>看布局布线、回流路径、地划分、DFM 与 EMC 风险</li>
+              <li>适合：即将打样，想最后确认一遍</li>
             </ul>
           </article>
-          <article class="service-card reveal">
-            <h3>打样前复核</h3>
-            <p>对 Gerber、坐标文件、BOM 与封装映射做最后一道关卡，尽量减少返板与试产问题。</p>
+          <article class="glass-panel package-card reveal visible">
+            <p class="package-tag">整套把关</p>
+            <h3>原理图 + PCB</h3>
+            <strong>￥1199 起</strong>
             <ul class="card-list">
-              <li>适合：已经准备打样但心里没底</li>
-              <li>交付：打样前风险清单</li>
-            </ul>
-          </article>
-          <article class="service-card reveal">
-            <h3>整改建议与复审</h3>
-            <p>每个问题给出风险等级、原因分析、修改方向，并支持修改后再次快速复核。</p>
-            <ul class="card-list">
-              <li>适合：想真正改对、而不是只收一份报告</li>
-              <li>交付：整改优先级 + 复审反馈</li>
+              <li>前后一起看，适合新项目首次出板</li>
+              <li>适合：希望一次性把主要风险先筛出来</li>
             </ul>
           </article>
         </div>
       </section>
 
       <section class="section" id="pricing">
-        <div class="section-heading reveal">
-          <p class="eyebrow">收费方案</p>
-          <h2>先知道大概花多少钱，再决定是否下单，不让客户在价格上猜来猜去</h2>
-        </div>
-        <div class="package-grid">
-          <article class="glass-panel package-card reveal">
-            <p class="package-tag">适合快速把关</p>
-            <h3>基础原理图审核</h3>
-            <strong>￥499 起</strong>
-            <ul class="card-list">
-              <li>适合：功能板、控制板、小型接口板</li>
-              <li>重点：电源、接口、器件逻辑、保护设计</li>
-              <li>交付：问题清单 + 风险说明</li>
-            </ul>
-          </article>
-          <article class="glass-panel package-card featured reveal">
-            <p class="package-tag">最多客户选择</p>
-            <h3>PCB 审核套餐</h3>
-            <strong>￥699 起</strong>
-            <ul class="card-list">
-              <li>适合：即将打样或刚完成布局布线</li>
-              <li>重点：回流路径、地划分、走线、EMC、DFM</li>
-              <li>交付：标注截图 + 修改建议 + 重点风险</li>
-            </ul>
-          </article>
-          <article class="glass-panel package-card reveal">
-            <p class="package-tag">适合完整把关</p>
-            <h3>原理图 + PCB 全套</h3>
-            <strong>￥1199 起</strong>
-            <ul class="card-list">
-              <li>适合：想一次性把关整个项目</li>
-              <li>重点：原理图 + PCB 全流程复核</li>
-              <li>交付：成套审图报告 + 整改优先级</li>
-            </ul>
-          </article>
+        <div class="section-heading reveal visible">
+          <p class="eyebrow">价格与流程</p>
+          <h2>先看到大概多少钱，再决定是否下单</h2>
         </div>
         <div class="panel-grid pricing-grid">
-          <div class="glass-panel reveal">
+          <div class="glass-panel reveal visible">
             <div class="panel-head">
-              <h3>在线估价器</h3>
-              <span>用于快速给客户参考价</span>
+              <h3>在线估价</h3>
+              <span>按类型、层数、复杂度和时效计算</span>
             </div>
             <div class="form-grid">
               <label>
@@ -198,7 +146,7 @@
                 <select id="serviceType">
                   <option value="schematic">原理图审核</option>
                   <option value="pcb">PCB 审核</option>
-                  <option value="combo">原理图 + PCB 套餐</option>
+                  <option value="combo">原理图 + PCB</option>
                 </select>
               </label>
               <label>
@@ -228,170 +176,58 @@
             </div>
             <div class="price-box">
               <p>参考报价</p>
-              <strong id="priceValue">￥699</strong>
+              <strong id="priceValue">￥499</strong>
               <span id="priceHint">适合基础原理图审核</span>
             </div>
-            <a class="button button-primary full" id="paymentEntryLink" href="payment.html">确认并进入支付</a>
           </div>
-          <div class="glass-panel reveal">
+
+          <div class="glass-panel reveal visible">
             <div class="panel-head">
-              <h3>收费说明</h3>
-              <span>提前说清楚，减少来回沟通</span>
+              <h3>下单流程</h3>
+              <span>客户只需要走 3 步</span>
             </div>
-            <div class="payment-card">
-              <div class="payment-method">
-                <span>加急说明</span>
-                <strong>12 小时加急通常额外加收 300 到 500 元</strong>
+            <div class="admin-list quick-step-list">
+              <div class="file-item">
+                <div>
+                  <strong>1. 上传资料</strong>
+                  <span>原理图、PCB、Gerber、BOM、重点说明</span>
+                </div>
               </div>
-              <div class="payment-method">
-                <span>复杂项目</span>
-                <strong>高速、开关电源、多接口混合信号项目按复杂度上浮</strong>
+              <div class="file-item">
+                <div>
+                  <strong>2. 确认报价</strong>
+                  <span>按项目复杂度和交付时效确定价格</span>
+                </div>
               </div>
-              <div class="payment-method">
-                <span>付款方式</span>
-                <strong>支持预付款下单，交付后补尾款</strong>
+              <div class="file-item">
+                <div>
+                  <strong>3. 审核交付</strong>
+                  <span>收到问题清单、风险说明和修改建议</span>
+                </div>
               </div>
             </div>
             <div class="mini-note">
-              这版网站适合先跑真实接单流程，后续可以再接微信支付、支付宝或企业对公支付接口。
+              加急项目通常会在标准价基础上上浮。页面先给参考价，复杂项目再按文件内容细化。
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="cases">
-        <div class="section-heading reveal">
-          <p class="eyebrow">案例示例</p>
-          <h2>用客户最容易理解的方式展示你到底解决过什么问题，而不是只说“我很专业”</h2>
-        </div>
-        <div class="case-grid">
-          <article class="glass-panel case-card reveal">
-            <span class="case-type">消费电子</span>
-            <h3>蓝牙小控制板复核</h3>
-            <p>发现电源去耦位置不合理、天线区域覆铜过近、按键上拉设计不稳定，避免试产阶段信号干扰问题。</p>
-            <ul class="card-list">
-              <li>客户关注：蓝牙稳定性与量产一致性</li>
-              <li>输出结果：7 条问题 + 3 条高优先级整改建议</li>
-            </ul>
-          </article>
-          <article class="glass-panel case-card reveal">
-            <span class="case-type">工控接口板</span>
-            <h3>RS485 / 电源接口审图</h3>
-            <p>指出浪涌保护方案不足、地线回流路径不合理、接口丝印与端子命名不一致的问题。</p>
-            <ul class="card-list">
-              <li>客户关注：现场稳定性与抗干扰</li>
-              <li>输出结果：5 条中高风险问题 + 接线端整改建议</li>
-            </ul>
-          </article>
-          <article class="glass-panel case-card reveal">
-            <span class="case-type">学习项目</span>
-            <h3>STM32 开发板练手项目</h3>
-            <p>帮助客户梳理 MCU 最小系统、电源分区、USB 差分走线和测试点布局，让第一次打样更稳。</p>
-            <ul class="card-list">
-              <li>客户关注：第一次打样少踩坑</li>
-              <li>输出结果：可直接照着改的入门整改清单</li>
-            </ul>
-          </article>
-        </div>
-      </section>
-
-      <section class="section" id="proof">
-        <div class="section-heading reveal">
-          <p class="eyebrow">为什么选我</p>
-          <h2>客户真正关心的，不只是会不会审图，而是你能不能把风险讲清楚、把建议落到修改动作</h2>
-        </div>
-        <div class="proof-grid">
-          <article class="proof-card reveal">
-            <h3>面向初级工程师</h3>
-            <p>报告尽量不用空泛术语，强调问题原因、风险后果与具体修改方向，让新人也能看懂。</p>
-          </article>
-          <article class="proof-card reveal">
-            <h3>保密承诺</h3>
-            <p>客户资料默认按保密项目处理，不公开图纸、不公开 BOM、不外传设计细节。</p>
-          </article>
-          <article class="proof-card reveal">
-            <h3>结果导向</h3>
-            <p>不做只讲原则的空建议，尽量给出能直接改的动作项与优先级顺序。</p>
-          </article>
-          <article class="proof-card reveal">
-            <h3>适合小团队</h3>
-            <p>支持按模块拆分报价，适合学生项目、个人接私单、初创研发验证阶段使用。</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-heading reveal">
-          <p class="eyebrow">客户反馈</p>
-          <h2>让潜在客户先看到“别人为什么愿意找你”，成交会更自然</h2>
-        </div>
-        <div class="testimonial-grid">
-          <article class="glass-panel testimonial-card reveal">
-            <p>“不是只圈出问题，而是连为什么会出问题、应该怎么改都写清楚了。对新手特别友好。”</p>
-            <strong>个人硬件工程师</strong>
-            <span>STM32 控制板项目</span>
-          </article>
-          <article class="glass-panel testimonial-card reveal">
-            <p>“我们内部没有专职审图角色，这个服务正好补上最后一道把关，尤其适合打样前冲刺阶段。”</p>
-            <strong>小型研发团队负责人</strong>
-            <span>接口板项目</span>
-          </article>
-          <article class="glass-panel testimonial-card reveal">
-            <p>“最有价值的是优先级排序。知道先改哪几条，节省了很多反复沟通和盲改时间。”</p>
-            <strong>自由接单工程师</strong>
-            <span>蓝牙产品样机</span>
-          </article>
-        </div>
-      </section>
-
-      <section class="section workflow">
-        <div class="section-heading reveal">
-          <p class="eyebrow">下单流程</p>
-          <h2>流程简单，客户只需要准备资料、说明重点、等待交付即可</h2>
-        </div>
-        <div class="timeline">
-          <div class="timeline-card reveal">
-            <span>01</span>
-            <h3>上传资料</h3>
-            <p>上传原理图、PCB 工程、Gerber、BOM 和补充说明，告诉我你最担心的问题。</p>
-          </div>
-          <div class="timeline-card reveal">
-            <span>02</span>
-            <h3>自动估价</h3>
-            <p>按服务类型、板层、复杂度、交付时效给出参考报价，再决定是否继续。</p>
-          </div>
-          <div class="timeline-card reveal">
-            <span>03</span>
-            <h3>问题评审</h3>
-            <p>从电源、接口、高速、EMC、DFM 等维度梳理问题并划分优先级。</p>
-          </div>
-          <div class="timeline-card reveal">
-            <span>04</span>
-            <h3>交付闭环</h3>
-            <p>交付问题标注、修改建议和答疑反馈，必要时支持修改后再次复审。</p>
           </div>
         </div>
       </section>
 
       <section class="section" id="upload">
-        <div class="section-heading reveal">
-          <p class="eyebrow">立即下单</p>
-          <h2>把客户真正需要填写的内容提前设计好，减少无效沟通，提升下单效率</h2>
-        </div>
-        <div class="server-banner reveal">
-          <strong>上传建议：</strong>
-          <span>最好同时提供原理图、PCB 工程、Gerber、BOM 和项目重点说明。资料越完整，审核越准确，报价也越快。</span>
+        <div class="section-heading reveal visible">
+          <p class="eyebrow">直接下单</p>
+          <h2>客户只填必要信息，重点是尽快把资料交上来</h2>
         </div>
         <div class="panel-grid">
-          <div class="glass-panel upload-panel reveal">
+          <div class="glass-panel reveal visible">
             <div class="panel-head">
-              <h3>提交订单资料</h3>
-              <span>支持拖拽多个文件上传</span>
+              <h3>提交项目资料</h3>
+              <span>支持多个文件一起上传</span>
             </div>
             <label class="dropzone" for="fileInput">
               <input id="fileInput" type="file" multiple>
               <strong>拖拽文件到这里，或点击选择</strong>
-              <p>建议上传：原理图、PCB 源文件、Gerber、BOM、设计说明、重点问题截图</p>
+              <p>建议上传：原理图、PCB 工程、Gerber、BOM、问题说明</p>
             </label>
             <div class="form-grid">
               <label>
@@ -406,48 +242,38 @@
                 <span>审核重点</span>
                 <select id="focus">
                   <option value="全面体检">全面体检</option>
-                  <option value="电源与EMC">电源与 EMC</option>
+                  <option value="电源与 EMC">电源与 EMC</option>
                   <option value="高速与信号完整性">高速与信号完整性</option>
-                  <option value="DFM与打样前复核">DFM 与打样前复核</option>
+                  <option value="DFM 与打样前复核">DFM 与打样前复核</option>
                 </select>
               </label>
               <label>
                 <span>期望交付</span>
                 <select id="delivery">
-                  <option value="24小时标准交付">24 小时标准交付</option>
-                  <option value="12小时加急">12 小时加急</option>
-                  <option value="48小时深度审核">48 小时深度审核</option>
+                  <option value="24 小时标准交付">24 小时标准交付</option>
+                  <option value="12 小时加急">12 小时加急</option>
+                  <option value="48 小时深度审核">48 小时深度审核</option>
                 </select>
               </label>
             </div>
             <label>
               <span>补充说明</span>
-              <textarea id="notes" rows="4" placeholder="请写清：板子用途、已知问题、最担心的接口或电源模块、是否即将打样、希望优先检查的内容"></textarea>
+              <textarea id="notes" rows="4" placeholder="写清项目用途、你最担心的模块、是否即将打样、希望优先检查的内容"></textarea>
             </label>
-            <div class="checklist-card">
-              <h3>送审资料清单</h3>
-              <ul class="card-list">
-                <li>原理图 PDF 或源文件</li>
-                <li>PCB 工程文件或导出文件</li>
-                <li>Gerber / 坐标文件 / BOM</li>
-                <li>板子用途、供电方式、关键接口说明</li>
-                <li>你最担心的问题点或历史踩坑点</li>
-              </ul>
-            </div>
             <div class="file-list" id="fileList">
               <p class="empty-state">还没有选择文件</p>
             </div>
             <div class="action-row">
-              <button class="button button-primary" id="submitOrderBtn" type="button">提交订单并上传到服务器</button>
-              <a class="button button-secondary" href="auth.html">先登录再下单</a>
+              <button class="button button-primary" id="submitOrderBtn" type="button">提交订单并上传文件</button>
+              <a class="button button-secondary" href="auth.html">先登录账号</a>
             </div>
             <div class="status-box" id="orderMessage">等待提交订单</div>
           </div>
 
-          <aside class="glass-panel order-panel reveal">
+          <aside class="glass-panel reveal visible">
             <div class="panel-head">
               <h3>订单摘要</h3>
-              <span>帮助客户确认下单信息</span>
+              <span>客户提交前再确认一次</span>
             </div>
             <div class="summary-card">
               <div>
@@ -468,54 +294,37 @@
               </div>
               <div>
                 <span>预计价格</span>
-                <strong id="summaryPrice">￥699</strong>
+                <strong id="summaryPrice">￥499</strong>
               </div>
             </div>
             <ul class="trust-list">
-              <li>默认保密，不公开项目图纸与客户资料</li>
+              <li>默认按保密项目处理</li>
               <li>支持一次整改说明答疑</li>
-              <li>支持按模块拆分报价，更适合初创项目</li>
+              <li>支付页会自动带入最近订单号</li>
             </ul>
-            <a class="button button-primary full" id="payNowLink" href="payment.html">进入收费窗口</a>
+            <a class="button button-primary full" id="payNowLink" href="payment.html">进入支付入口</a>
           </aside>
         </div>
       </section>
 
       <section class="section faq" id="faq">
-        <div class="section-heading reveal">
+        <div class="section-heading reveal visible">
           <p class="eyebrow">常见问题</p>
-          <h2>把客户最常问的事提前写清楚，减少来回沟通成本</h2>
+          <h2>只保留客户最常问的 3 个问题</h2>
         </div>
         <div class="faq-list">
-          <details class="faq-item reveal" open>
-            <summary>支持哪些设计软件和文件格式？</summary>
-            <p>可覆盖 Altium Designer、KiCad、立创 EDA、Gerber、BOM、PDF 原理图，以及常见工程导出文件。</p>
+          <details class="faq-item reveal visible" open>
+            <summary>支持哪些设计文件？</summary>
+            <p>支持 Altium、KiCad、立创 EDA、Gerber、BOM、PDF 原理图和常见导出文件。</p>
           </details>
-          <details class="faq-item reveal">
-            <summary>如果我是新手，看得懂你的报告吗？</summary>
-            <p>可以。报告会尽量写清楚问题原因、风险后果和修改方向，不只是简单标一句“这里有问题”。</p>
+          <details class="faq-item reveal visible">
+            <summary>如果我是新手，能看懂交付内容吗？</summary>
+            <p>可以。交付会尽量写清问题原因、风险后果和建议动作，不只做简单标记。</p>
           </details>
-          <details class="faq-item reveal">
-            <summary>收费是固定的吗？</summary>
-            <p>基础项目有参考价，高速、电源、多接口混合信号项目会根据复杂度上浮；加急审核会有额外费用。</p>
+          <details class="faq-item reveal visible">
+            <summary>能不能只审一个模块？</summary>
+            <p>可以。你在补充说明里写清电源、USB、MCU 或高速接口等指定模块即可。</p>
           </details>
-          <details class="faq-item reveal">
-            <summary>能不能先只审一部分模块？</summary>
-            <p>可以。你可以在备注里说明只需要审核电源、USB、MCU 最小系统、差分接口等指定模块。</p>
-          </details>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="closing-cta reveal">
-          <div>
-            <p class="eyebrow">准备开始</p>
-            <h2>如果你已经有图纸和工程文件，现在就可以直接上传，我会按你最关心的问题优先审核</h2>
-          </div>
-          <div class="closing-actions">
-            <a class="button button-primary" href="#upload">立即提交资料</a>
-            <a class="button button-secondary" href="auth.html">先注册账号</a>
-          </div>
         </div>
       </section>
     </main>

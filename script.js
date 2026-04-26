@@ -1,4 +1,4 @@
-const els = {
+﻿const els = {
   fileInput: document.querySelector("#fileInput"),
   dropzone: document.querySelector(".dropzone"),
   fileList: document.querySelector("#fileList"),
@@ -21,7 +21,6 @@ const els = {
   submitOrderBtn: document.querySelector("#submitOrderBtn"),
   orderMessage: document.querySelector("#orderMessage"),
   payNowLink: document.querySelector("#payNowLink"),
-  paymentEntryLink: document.querySelector("#paymentEntryLink"),
   authLink: document.querySelector("#authLink"),
   userBadge: document.querySelector("#userBadge")
 };
@@ -29,9 +28,9 @@ const els = {
 const priceMap = { schematic: 499, pcb: 699, combo: 1199 };
 const layerMap = { 2: 0, 4: 200, 6: 450, 8: 800 };
 const complexityMap = {
-  basic: { price: 0, label: "适合基础控制板、常规接口板或简单MCU小系统" },
-  mid: { price: 300, label: "适合多接口、多电源或中等复杂度项目" },
-  high: { price: 800, label: "适合高速、电源、混合信号或复杂约束项目" }
+  basic: { price: 0, label: "基础功能板，适合常规控制和接口项目" },
+  mid: { price: 300, label: "中等复杂度，适合多接口和多电源项目" },
+  high: { price: 800, label: "高复杂度，适合高速、电源和混合信号项目" }
 };
 const speedMap = { standard: 0, rush: 500 };
 
@@ -82,7 +81,7 @@ function updateSummary() {
 function updatePrice() {
   const total = getCurrentPrice();
   const complexity = complexityMap[els.complexity.value];
-  const rushText = els.speed.value === "rush" ? " / 含加急费用" : "";
+  const rushText = els.speed.value === "rush" ? " / 含加急费" : "";
 
   els.priceValue.textContent = `￥${total}`;
   els.priceHint.textContent = `${els.layerCount.value} 层 / ${complexity.label}${rushText}`;
@@ -105,24 +104,9 @@ function bindDragAndDrop() {
   });
 
   els.dropzone.addEventListener("drop", (event) => {
-    const files = event.dataTransfer.files;
-    els.fileInput.files = files;
-    renderFiles(files);
+    els.fileInput.files = event.dataTransfer.files;
+    renderFiles(event.dataTransfer.files);
   });
-}
-
-function bindReveal() {
-  const items = document.querySelectorAll(".reveal");
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12 });
-
-  items.forEach((item) => observer.observe(item));
 }
 
 function setMessage(text, type = "info") {
@@ -132,6 +116,22 @@ function setMessage(text, type = "info") {
 
 function isServerMode() {
   return window.location.protocol.startsWith("http");
+}
+
+function getCurrentUser() {
+  try {
+    return JSON.parse(localStorage.getItem("pcbCurrentUser") || "null");
+  } catch {
+    return null;
+  }
+}
+
+function hydrateAuth() {
+  const user = getCurrentUser();
+  if (!user) return;
+  els.userBadge.textContent = `已登录：${user.name}`;
+  els.authLink.textContent = "我的订单";
+  els.authLink.href = "my.html";
 }
 
 function fileToBase64(file) {
@@ -159,30 +159,15 @@ async function buildFilePayload(files) {
   return result;
 }
 
-function getCurrentUser() {
-  try {
-    return JSON.parse(localStorage.getItem("pcbCurrentUser") || "null");
-  } catch {
-    return null;
-  }
-}
-
-function hydrateAuth() {
-  const user = getCurrentUser();
-  if (!user) return;
-  els.userBadge.textContent = `已登录：${user.name}`;
-  els.authLink.textContent = "账号中心";
-}
-
 async function submitOrder() {
   if (!isServerMode()) {
-    setMessage("请先通过线上地址访问网站，再使用上传和支付功能。", "error");
+    setMessage("请先通过线上地址访问网站，再使用上传和下单功能。", "error");
     return;
   }
 
   const user = getCurrentUser();
   if (!user) {
-    setMessage("请先注册或登录账号，再提交订单。", "error");
+    setMessage("请先登录账号，再提交订单。", "error");
     return;
   }
 
@@ -193,17 +178,16 @@ async function submitOrder() {
 
   const files = [...els.fileInput.files];
   if (!files.length) {
-    setMessage("请至少上传一个设计文件。", "error");
+    setMessage("请至少上传一个文件。", "error");
     return;
   }
 
   els.submitOrderBtn.disabled = true;
-  setMessage("正在上传文件并创建订单，请稍候...", "loading");
+  setMessage("正在上传文件并创建订单...", "loading");
 
   try {
     const payload = {
       accountId: user.id,
-      accountName: user.name,
       projectName: els.projectName.value.trim(),
       contact: els.contact.value.trim(),
       focus: els.focus.value,
@@ -230,11 +214,10 @@ async function submitOrder() {
       throw new Error(data.error || "提交失败");
     }
 
-    const href = `payment.html?orderId=${encodeURIComponent(data.order.id)}`;
+    const payHref = `payment.html?orderId=${encodeURIComponent(data.order.id)}`;
     localStorage.setItem("latestOrderId", data.order.id);
-    els.payNowLink.href = href;
-    els.paymentEntryLink.href = href;
-    setMessage(`订单创建成功，订单号：${data.order.id}。现在可以进入支付页面。`, "success");
+    els.payNowLink.href = payHref;
+    setMessage(`订单已创建，订单号：${data.order.id}。现在可以继续付款。`, "success");
   } catch (error) {
     setMessage(`提交失败：${error.message}`, "error");
   } finally {
@@ -245,9 +228,7 @@ async function submitOrder() {
 function hydratePaymentLinks() {
   const latestOrderId = localStorage.getItem("latestOrderId");
   if (!latestOrderId) return;
-  const href = `payment.html?orderId=${encodeURIComponent(latestOrderId)}`;
-  els.payNowLink.href = href;
-  els.paymentEntryLink.href = href;
+  els.payNowLink.href = `payment.html?orderId=${encodeURIComponent(latestOrderId)}`;
 }
 
 els.fileInput.addEventListener("change", (event) => renderFiles(event.target.files));
@@ -263,6 +244,5 @@ els.submitOrderBtn.addEventListener("click", submitOrder);
 updateSummary();
 updatePrice();
 bindDragAndDrop();
-bindReveal();
 hydratePaymentLinks();
 hydrateAuth();
