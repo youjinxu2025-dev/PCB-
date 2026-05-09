@@ -52,7 +52,10 @@ body::before {
 }
 
 .topbar {
-  position: static;
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
   z-index: 20;
   display: flex;
   align-items: center;
