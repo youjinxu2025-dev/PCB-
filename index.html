@@ -11,7 +11,7 @@
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="styles.css?v=20260509-home-login">
+  <link rel="stylesheet" href="styles.css?v=20260509-login-gate">
 </head>
 <body>
   <div class="page-shell">
@@ -219,7 +219,16 @@
           <p class="eyebrow">直接下单</p>
           <h2>客户只填必要信息，重点是尽快把资料交上来</h2>
         </div>
-        <div class="panel-grid">
+        <div class="glass-panel auth-required-card reveal visible" id="uploadLoginGate">
+          <p class="eyebrow">需要先登录</p>
+          <h3>登录成功后，才会显示上传文件和提交订单窗口</h3>
+          <p>这样每个工程文件、付款记录和审核进度都会绑定到你的账号，后续查看订单不会混乱。</p>
+          <div class="action-row">
+            <a class="button button-primary" href="#hero">回到上方登录</a>
+            <a class="button button-secondary" href="auth.html?mode=register">注册账号</a>
+          </div>
+        </div>
+        <div class="panel-grid is-hidden" id="uploadPanel">
           <div class="glass-panel reveal visible">
             <div class="panel-head">
               <h3>提交项目资料</h3>
@@ -331,6 +340,6 @@
     </main>
   </div>
 
-  <script src="script.js?v=20260509-home-login"></script>
+  <script src="script.js?v=20260509-login-gate"></script>
 </body>
 </html>

@@ -26,7 +26,9 @@
   homeLoginPhone: document.querySelector("#homeLoginPhone"),
   homeLoginPassword: document.querySelector("#homeLoginPassword"),
   homeLoginBtn: document.querySelector("#homeLoginBtn"),
-  homeLoginMessage: document.querySelector("#homeLoginMessage")
+  homeLoginMessage: document.querySelector("#homeLoginMessage"),
+  uploadLoginGate: document.querySelector("#uploadLoginGate"),
+  uploadPanel: document.querySelector("#uploadPanel")
 };
 
 const priceMap = { schematic: 499, pcb: 699, combo: 1199 };
@@ -136,8 +138,19 @@ function getCurrentUser() {
   }
 }
 
+function renderOrderAccess() {
+  const user = getCurrentUser();
+  if (els.uploadLoginGate) {
+    els.uploadLoginGate.classList.toggle("is-hidden", Boolean(user));
+  }
+  if (els.uploadPanel) {
+    els.uploadPanel.classList.toggle("is-hidden", !user);
+  }
+}
+
 function hydrateAuth() {
   const user = getCurrentUser();
+  renderOrderAccess();
   if (!user) return;
   els.userBadge.textContent = `已登录：${user.name}`;
   els.authLink.textContent = "我的订单";
@@ -188,6 +201,7 @@ async function homeLogin() {
     saveCurrentUser(data.user);
     els.homeLoginPassword.value = "";
     hydrateAuth();
+    renderOrderAccess();
     setHomeLoginMessage(`登录成功：${data.user.name}。现在可以直接上传文件下单。`, "success");
   } catch (error) {
     setHomeLoginMessage(`登录失败：${error.message}`, "error");
