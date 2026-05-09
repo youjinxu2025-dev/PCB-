@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的订单 | 审图工坊</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell inner-shell">
+    <header class="topbar">
+      <a class="brand" href="index.html">
+        <span class="brand-badge">PCB</span>
+        <span>
+          <strong>审图工坊</strong>
+          <small>个人中心 / 我的订单</small>
+        </span>
+      </a>
+      <nav class="nav">
+        <a href="index.html">前台首页</a>
+        <a href="auth.html">登录注册</a>
+        <a href="payment.html">支付入口</a>
+      </nav>
+      <div class="topbar-actions">
+        <span class="user-badge" id="myUserBadge">未登录</span>
+        <a class="button button-primary" href="index.html#upload">继续下单</a>
+      </div>
+    </header>
+
+    <main class="section">
+      <div class="section-heading reveal visible">
+        <p class="eyebrow">个人中心</p>
+        <h2>登录后可以在这里查看自己的历史订单、付款记录、审核状态和最近一次下单的项目摘要。</h2>
+      </div>
+
+      <div class="status-box" id="myStatus">正在读取你的订单数据...</div>
+
+      <section class="stats-grid my-stats-grid">
+        <article class="glass-panel stat-card reveal visible">
+          <span>我的订单数</span>
+          <strong id="myTotalOrders">0</strong>
+        </article>
+        <article class="glass-panel stat-card reveal visible">
+          <span>已付款订单</span>
+          <strong id="myPaidOrders">0</strong>
+        </article>
+        <article class="glass-panel stat-card reveal visible">
+          <span>待审核订单</span>
+          <strong id="myPendingOrders">0</strong>
+        </article>
+        <article class="glass-panel stat-card reveal visible">
+          <span>累计付款</span>
+          <strong id="myTotalSpent">￥0</strong>
+        </article>
+      </section>
+
+      <section class="panel-grid my-panel-grid">
+        <div class="glass-panel reveal visible">
+          <div class="panel-head">
+            <h3>我的订单</h3>
+            <span>按最新提交时间排序</span>
+          </div>
+          <div class="my-order-list" id="myOrdersList">
+            <p class="empty-state">暂时还没有订单记录。</p>
+          </div>
+        </div>
+
+        <aside class="glass-panel reveal visible">
+          <div class="panel-head">
+            <h3>最近付款记录</h3>
+            <span>方便快速核对付款状态</span>
+          </div>
+          <div class="admin-list" id="myPaymentsList">
+            <p class="empty-state">暂时还没有付款记录。</p>
+          </div>
+
+          <div class="checklist-card my-side-card">
+            <h3>建议你接下来做的事</h3>
+            <ul class="card-list">
+              <li>待付款订单可以直接进入支付页继续补录付款信息。</li>
+              <li>如果审核重点变了，可以在下一次下单备注里写得更具体。</li>
+              <li>如果你准备正式商用，我可以继续把这里升级成真实客户工作台。</li>
+            </ul>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </div>
+
+  <script src="my.js"></script>
+</body>
+</html>
