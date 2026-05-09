@@ -22,7 +22,11 @@
   orderMessage: document.querySelector("#orderMessage"),
   payNowLink: document.querySelector("#payNowLink"),
   authLink: document.querySelector("#authLink"),
-  userBadge: document.querySelector("#userBadge")
+  userBadge: document.querySelector("#userBadge"),
+  homeLoginPhone: document.querySelector("#homeLoginPhone"),
+  homeLoginPassword: document.querySelector("#homeLoginPassword"),
+  homeLoginBtn: document.querySelector("#homeLoginBtn"),
+  homeLoginMessage: document.querySelector("#homeLoginMessage")
 };
 
 const priceMap = { schematic: 499, pcb: 699, combo: 1199 };
@@ -114,6 +118,12 @@ function setMessage(text, type = "info") {
   els.orderMessage.dataset.state = type;
 }
 
+function setHomeLoginMessage(text, type = "info") {
+  if (!els.homeLoginMessage) return;
+  els.homeLoginMessage.textContent = text;
+  els.homeLoginMessage.dataset.state = type;
+}
+
 function isServerMode() {
   return window.location.protocol.startsWith("http");
 }
@@ -132,6 +142,58 @@ function hydrateAuth() {
   els.userBadge.textContent = `已登录：${user.name}`;
   els.authLink.textContent = "我的订单";
   els.authLink.href = "my.html";
+  setHomeLoginMessage(`当前已登录：${user.name} / ${user.phone || "已绑定账号"}`, "success");
+  if (els.homeLoginBtn) {
+    els.homeLoginBtn.textContent = "已登录";
+  }
+}
+
+function normalizePhone(phone) {
+  return String(phone || "").replace(/\D/g, "");
+}
+
+function saveCurrentUser(user) {
+  localStorage.setItem("pcbCurrentUser", JSON.stringify(user));
+}
+
+async function homeLogin() {
+  if (!isServerMode()) {
+    setHomeLoginMessage("请通过线上网址访问网站后再登录。", "error");
+    return;
+  }
+
+  const phone = normalizePhone(els.homeLoginPhone.value);
+  const password = els.homeLoginPassword.value.trim();
+
+  if (!/^1\d{10}$/.test(phone) || !password) {
+    setHomeLoginMessage("请输入 11 位手机号和登录密码。", "error");
+    return;
+  }
+
+  els.homeLoginBtn.disabled = true;
+  setHomeLoginMessage("正在登录账号...", "loading");
+
+  try {
+    const response = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone, password })
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.error || "登录失败");
+    }
+
+    saveCurrentUser(data.user);
+    els.homeLoginPassword.value = "";
+    hydrateAuth();
+    setHomeLoginMessage(`登录成功：${data.user.name}。现在可以直接上传文件下单。`, "success");
+  } catch (error) {
+    setHomeLoginMessage(`登录失败：${error.message}`, "error");
+  } finally {
+    els.homeLoginBtn.disabled = false;
+  }
 }
 
 function fileToBase64(file) {
@@ -240,6 +302,7 @@ els.layerCount.addEventListener("change", updatePrice);
 els.complexity.addEventListener("change", updatePrice);
 els.speed.addEventListener("change", updatePrice);
 els.submitOrderBtn.addEventListener("click", submitOrder);
+els.homeLoginBtn.addEventListener("click", homeLogin);
 
 updateSummary();
 updatePrice();

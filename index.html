@@ -11,7 +11,7 @@
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="styles.css?v=20260509-nav-flow">
+  <link rel="stylesheet" href="styles.css?v=20260509-home-login">
 </head>
 <body>
   <div class="page-shell">
@@ -66,26 +66,27 @@
         </div>
 
         <div class="hero-panel reveal visible">
-          <div class="signal-card">
-            <span class="signal-title">适合这几类项目</span>
-            <div class="signal-grid">
-              <div>
-                <strong>初级工程师</strong>
-                <p>需要有人帮你在出板前看一遍。</p>
-              </div>
-              <div>
-                <strong>小团队项目</strong>
-                <p>没有专职审核角色，先补一道保险。</p>
-              </div>
-              <div>
-                <strong>打样前复核</strong>
-                <p>重点排查回流、电源、封装和接口问题。</p>
-              </div>
-              <div>
-                <strong>问题定位</strong>
-                <p>已经怀疑某些模块有风险，想先确认。</p>
-              </div>
+          <div class="signal-card login-card">
+            <span class="signal-title">账号登录</span>
+            <p class="login-helper">登录后再下单，工程文件、付款和订单进度会自动绑定到你的账号。</p>
+            <div class="form-grid login-form">
+              <label>
+                <span>账号 / 手机号</span>
+                <input id="homeLoginPhone" type="tel" placeholder="请输入注册手机号">
+              </label>
+              <label>
+                <span>密码</span>
+                <input id="homeLoginPassword" type="password" placeholder="请输入登录密码">
+              </label>
             </div>
+            <div class="action-row login-actions">
+              <button class="button button-primary" id="homeLoginBtn" type="button">立即登录</button>
+              <span class="login-links">
+                <a href="auth.html?mode=register">注册账号</a>
+                <a href="auth.html?mode=reset">忘记密码</a>
+              </span>
+            </div>
+            <div class="status-box home-login-message" id="homeLoginMessage">还没有账号？先点注册账号，验证手机号后即可下单。</div>
           </div>
           <div class="mini-note">
             默认按保密项目处理，不公开图纸、BOM 和客户资料。适合个人项目、接单项目和小批量验证阶段使用。
@@ -330,6 +331,6 @@
     </main>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=20260509-home-login"></script>
 </body>
 </html>

@@ -273,4 +273,5 @@ authEls.logoutBtn.addEventListener("click", logout);
 authEls.resetPasswordBtn.addEventListener("click", resetPassword);
 updateCountdownButton("register");
 updateCountdownButton("reset");
-switchMode("login");
+const initialMode = new URLSearchParams(window.location.search).get("mode");
+switchMode(["login", "register", "reset"].includes(initialMode) ? initialMode : "login");

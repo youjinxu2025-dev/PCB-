@@ -276,6 +276,54 @@ body::before {
   background: rgba(255, 253, 248, 0.8);
 }
 
+.login-card {
+  display: grid;
+  gap: 18px;
+}
+
+.login-card .signal-title {
+  font-size: 1.25rem;
+}
+
+.login-helper {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.login-form {
+  margin: 0;
+}
+
+.login-actions {
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0;
+}
+
+.login-links {
+  display: inline-flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.login-links a {
+  color: var(--accent-dark);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(141, 55, 18, 0.28);
+}
+
+.login-links a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.home-login-message {
+  margin: 0;
+}
+
 .diagnostic-card {
   margin-top: 18px;
   background: linear-gradient(180deg, #1d3028 0%, #15251f 100%);
