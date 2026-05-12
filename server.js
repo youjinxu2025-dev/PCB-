@@ -539,6 +539,49 @@ function handleDashboard(res) {
   sendJson(res, 200, { stats, orders, payments });
 }
 
+async function handleSaveReview(req, res, orderId) {
+  try {
+    const payload = parseJsonBody(await getRequestBody(req));
+    const orders = readJson(ORDERS_FILE);
+    const order = orders.find((item) => item.id === orderId);
+
+    if (!order) {
+      sendJson(res, 404, { error: "未找到对应订单" });
+      return;
+    }
+
+    const issues = Array.isArray(payload.issues) ? payload.issues : [];
+    const cleanIssues = issues
+      .map((issue, index) => ({
+        id: issue.id || `ISS-${Date.now()}-${index + 1}`,
+        title: String(issue.title || "").trim(),
+        severity: ["high", "medium", "low"].includes(issue.severity) ? issue.severity : "medium",
+        area: String(issue.area || "").trim(),
+        location: String(issue.location || "").trim(),
+        description: String(issue.description || "").trim(),
+        suggestion: String(issue.suggestion || "").trim(),
+        x: Math.min(100, Math.max(0, Number(issue.x || 50))),
+        y: Math.min(100, Math.max(0, Number(issue.y || 50)))
+      }))
+      .filter((issue) => issue.title || issue.description || issue.suggestion);
+
+    order.reviewStatus = payload.reviewStatus || (cleanIssues.length ? "已反馈" : "审核中");
+    order.reviewReport = {
+      overallRisk: ["high", "medium", "low"].includes(payload.overallRisk) ? payload.overallRisk : "medium",
+      summary: String(payload.summary || "").trim(),
+      conclusion: String(payload.conclusion || "").trim(),
+      reviewer: String(payload.reviewer || "审图工坊").trim(),
+      updatedAt: new Date().toISOString(),
+      issues: cleanIssues
+    };
+
+    writeJson(ORDERS_FILE, orders);
+    sendJson(res, 200, { ok: true, order });
+  } catch (error) {
+    sendJson(res, 500, { error: error.message || "保存评审反馈失败" });
+  }
+}
+
 function handleMyOrders(req, res, requestUrl) {
   const accountId = String(requestUrl.searchParams.get("accountId") || "").trim();
 
@@ -618,6 +661,12 @@ function handleRoute(req, res) {
 
   if (req.method === "GET" && pathname === "/api/dashboard") {
     handleDashboard(res);
+    return;
+  }
+
+  const reviewMatch = pathname.match(/^\/api\/orders\/([^/]+)\/review$/);
+  if (req.method === "POST" && reviewMatch) {
+    handleSaveReview(req, res, decodeURIComponent(reviewMatch[1]));
     return;
   }
 

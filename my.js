@@ -22,9 +22,78 @@ function formatDate(value) {
   return new Date(value).toLocaleString("zh-CN", { hour12: false });
 }
 
+function riskLabel(value) {
+  return { high: "高风险", medium: "中风险", low: "低风险" }[value] || "中风险";
+}
+
+function riskText(value) {
+  return { high: "需要优先修改", medium: "建议修改后再打样", low: "可作为优化项" }[value] || "建议修改后再打样";
+}
+
+function countIssues(issues, severity) {
+  return issues.filter((issue) => issue.severity === severity).length;
+}
+
 function setStatus(text, type = "info") {
   myEls.status.textContent = text;
   myEls.status.dataset.state = type;
+}
+
+function renderReviewReport(order) {
+  const report = order.reviewReport;
+  if (!report?.issues?.length) {
+    return `
+      <div class="review-empty">
+        <strong>评审反馈待更新</strong>
+        <span>工程师完成审核后，这里会显示问题点、风险等级和修改建议。</span>
+      </div>
+    `;
+  }
+
+  const issues = report.issues;
+  return `
+    <section class="client-review">
+      <div class="client-review-head">
+        <div>
+          <span class="status-pill risk-${report.overallRisk}">整体：${riskLabel(report.overallRisk)}</span>
+          <h3>可视化评审反馈</h3>
+          <p>${report.summary || "本次评审已标出主要问题点，请按风险等级优先处理。"}</p>
+        </div>
+        <span>${report.reviewer || "审图工坊"} · ${formatDate(report.updatedAt)}</span>
+      </div>
+
+      <div class="risk-meter">
+        <span class="risk-high">高风险 ${countIssues(issues, "high")}</span>
+        <span class="risk-medium">中风险 ${countIssues(issues, "medium")}</span>
+        <span class="risk-low">低风险 ${countIssues(issues, "low")}</span>
+      </div>
+
+      <div class="review-map" aria-label="PCB 问题点示意图">
+        <div class="review-map-grid"></div>
+        ${issues.map((issue, index) => `
+          <span
+            class="review-dot risk-${issue.severity}"
+            style="left:${issue.x || 50}%; top:${issue.y || 50}%"
+            title="${issue.title || `问题点 ${index + 1}`}"
+          >${index + 1}</span>
+        `).join("")}
+      </div>
+
+      <div class="client-issue-list">
+        ${issues.map((issue, index) => `
+          <article class="client-issue-card risk-${issue.severity}">
+            <div class="client-issue-title">
+              <strong>${index + 1}. ${issue.title || "未命名问题"}</strong>
+              <span>${riskLabel(issue.severity)} / ${riskText(issue.severity)}</span>
+            </div>
+            <p><b>位置：</b>${issue.location || "未标注"} ${issue.area ? ` / ${issue.area}` : ""}</p>
+            <p><b>问题：</b>${issue.description || "暂无问题说明。"}</p>
+            <p><b>建议：</b>${issue.suggestion || "暂无修改建议。"}</p>
+          </article>
+        `).join("")}
+      </div>
+    </section>
+  `;
 }
 
 function renderOrders(orders) {
@@ -53,6 +122,7 @@ function renderOrders(orders) {
         <span class="status-pill">文件：${order.files?.length || 0} 个</span>
       </div>
       <div class="mini-note">${order.notes || "本单没有填写额外备注。"}</div>
+      ${renderReviewReport(order)}
       <div class="action-row">
         <a class="button button-secondary" href="payment.html?orderId=${encodeURIComponent(order.id)}">继续支付</a>
       </div>

@@ -10,7 +10,7 @@
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="styles.css?v=20260509-login-gate">
+  <link rel="stylesheet" href="styles.css?v=20260512-review">
 </head>
 <body>
   <div class="page-shell inner-shell">
@@ -19,7 +19,7 @@
         <span class="brand-badge">PCB</span>
         <span>
           <strong>审图工坊</strong>
-          <small>后台接单管理</small>
+          <small>后台接单与评审反馈</small>
         </span>
       </a>
       <nav class="nav">
@@ -33,7 +33,7 @@
     <main class="section">
       <div class="section-heading reveal visible">
         <p class="eyebrow">管理后台</p>
-        <h2>查看订单、付款和上传资料摘要，方便你集中处理接单流程</h2>
+        <h2>选择客户订单，填写评审问题，客户会在“我的订单”里看到可视化反馈。</h2>
       </div>
 
       <section class="stats-grid">
@@ -59,7 +59,7 @@
         <div class="glass-panel reveal visible">
           <div class="panel-head">
             <h3>订单列表</h3>
-            <span>接单后台核心视图</span>
+            <span>点击“填写评审”开始反馈</span>
           </div>
           <div class="table-wrap">
             <table class="admin-table">
@@ -68,10 +68,10 @@
                   <th>订单号</th>
                   <th>账号</th>
                   <th>项目</th>
-                  <th>联系人</th>
                   <th>报价</th>
-                  <th>支付状态</th>
-                  <th>文件数</th>
+                  <th>付款</th>
+                  <th>审核</th>
+                  <th>操作</th>
                 </tr>
               </thead>
               <tbody id="ordersBody">
@@ -93,9 +93,57 @@
           </div>
         </aside>
       </section>
+
+      <section class="glass-panel review-editor reveal visible" id="reviewEditor">
+        <div class="panel-head">
+          <h3>评审反馈编辑</h3>
+          <span id="selectedOrderText">请先从订单列表选择一个订单</span>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            <span>订单号</span>
+            <input id="reviewOrderId" type="text" readonly placeholder="选择订单后自动填入">
+          </label>
+          <label>
+            <span>审核状态</span>
+            <select id="reviewStatus">
+              <option value="审核中">审核中</option>
+              <option value="已反馈">已反馈</option>
+              <option value="待客户修改">待客户修改</option>
+              <option value="复审通过">复审通过</option>
+            </select>
+          </label>
+          <label>
+            <span>整体风险</span>
+            <select id="overallRisk">
+              <option value="low">低风险</option>
+              <option value="medium">中风险</option>
+              <option value="high">高风险</option>
+            </select>
+          </label>
+          <label>
+            <span>评审人</span>
+            <input id="reviewer" type="text" value="审图工坊">
+          </label>
+        </div>
+
+        <label>
+          <span>总体结论</span>
+          <textarea id="reviewSummary" rows="3" placeholder="例如：电源输入保护较弱，USB 接口和地回流需要优先修改。"></textarea>
+        </label>
+
+        <div class="issue-editor-list" id="issueEditorList"></div>
+
+        <div class="action-row">
+          <button class="button button-secondary" id="addIssueBtn" type="button">新增问题点</button>
+          <button class="button button-primary" id="saveReviewBtn" type="button">保存并反馈给客户</button>
+        </div>
+        <div class="status-box" id="reviewMessage">等待选择订单。</div>
+      </section>
     </main>
   </div>
 
-  <script src="admin.js"></script>
+  <script src="admin.js?v=20260512-review"></script>
 </body>
 </html>
