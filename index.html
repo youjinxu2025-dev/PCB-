@@ -11,10 +11,15 @@
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="styles.css?v=20260509-login-gate">
+  <link rel="stylesheet" href="styles.css?v=20260512-layout">
 </head>
-<body>
+<body class="home-page">
   <div class="page-shell">
+    <div class="site-strip">
+      <span>电子工程师在线审图服务</span>
+      <a href="#pricing">查看收费</a>
+      <a href="#upload">提交项目</a>
+    </div>
     <header class="topbar">
       <a class="brand" href="#hero">
         <span class="brand-badge">PCB</span>
@@ -40,27 +45,27 @@
     <main>
       <section class="hero" id="hero">
         <div class="hero-copy reveal visible">
-          <p class="eyebrow">给打样前多一道把关</p>
-          <h1>帮你先看一遍原理图和 PCB，减少返板和低级错误</h1>
+          <p class="eyebrow">打样前多一道专业把关</p>
+          <h1>先把原理图和 PCB 风险查清楚，再去打样</h1>
           <p class="hero-text">
-            你上传工程文件，我给出问题清单、风险等级和修改建议。页面只保留最关键的三件事：看服务、看价格、直接下单。
+            面向初级工程师、小团队和硬件创业项目。你上传工程文件，我输出问题清单、风险等级、修改建议和复审意见。
           </p>
           <div class="hero-actions">
-            <a class="button button-primary" href="#upload">上传文件下单</a>
-            <a class="button button-secondary" href="#pricing">先看参考价格</a>
+            <a class="button button-primary" href="#upload">登录后提交项目</a>
+            <a class="button button-secondary" href="#pricing">先看收费标准</a>
           </div>
           <ul class="hero-metrics">
             <li>
               <strong>24h</strong>
-              <span>标准交付</span>
+              <span>标准审核反馈</span>
             </li>
             <li>
               <strong>300+</strong>
-              <span>检查项</span>
+              <span>常见风险检查点</span>
             </li>
             <li>
               <strong>1 对 1</strong>
-              <span>修改说明</span>
+              <span>整改说明答疑</span>
             </li>
           </ul>
         </div>
@@ -97,7 +102,7 @@
       <section class="section" id="services">
         <div class="section-heading reveal visible">
           <p class="eyebrow">服务内容</p>
-          <h2>首页只保留 3 个服务入口，避免让客户先在页面里迷路</h2>
+          <h2>把客户最关心的服务先摆清楚</h2>
         </div>
         <div class="package-grid">
           <article class="glass-panel package-card reveal visible">
@@ -126,6 +131,35 @@
               <li>前后一起看，适合新项目首次出板</li>
               <li>适合：希望一次性把主要风险先筛出来</li>
             </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section review-showcase">
+        <div class="section-heading reveal visible center-heading">
+          <p class="eyebrow">重点审核方向</p>
+          <h2>不是简单看一眼，而是按硬件风险逐项排查</h2>
+        </div>
+        <div class="showcase-grid">
+          <article class="showcase-card dark-card">
+            <span>01</span>
+            <h3>电源与回流路径</h3>
+            <p>检查供电链路、地回流、去耦位置、过流保护和电源完整性风险。</p>
+          </article>
+          <article class="showcase-card">
+            <span>02</span>
+            <h3>接口与保护</h3>
+            <p>检查 USB、串口、按键、外部接口、ESD、防反接和上下拉设计。</p>
+          </article>
+          <article class="showcase-card">
+            <span>03</span>
+            <h3>布局布线风险</h3>
+            <p>检查关键器件摆放、走线宽度、间距、过孔、环路面积和高速线处理。</p>
+          </article>
+          <article class="showcase-card">
+            <span>04</span>
+            <h3>打样制造问题</h3>
+            <p>检查封装、丝印、定位孔、可焊性、装配方向和 DFM/DFA 风险。</p>
           </article>
         </div>
       </section>
@@ -338,8 +372,36 @@
         </div>
       </section>
     </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="brand footer-brand" href="#hero">
+          <span class="brand-badge">PCB</span>
+          <span>
+            <strong>审图工坊</strong>
+            <small>原理图 / PCB 专业审核接单</small>
+          </span>
+        </a>
+      </div>
+      <div>
+        <h3>服务线</h3>
+        <a href="#services">原理图审核</a>
+        <a href="#services">PCB 审核</a>
+        <a href="#pricing">报价估算</a>
+      </div>
+      <div>
+        <h3>客户入口</h3>
+        <a href="#upload">提交项目</a>
+        <a href="payment.html">支付入口</a>
+        <a href="my.html">我的订单</a>
+      </div>
+      <div>
+        <h3>交付说明</h3>
+        <p>交付问题清单、风险等级、修改建议和复审意见。默认按保密项目处理。</p>
+      </div>
+    </footer>
   </div>
 
-  <script src="script.js?v=20260509-login-gate"></script>
+  <script src="script.js?v=20260512-layout"></script>
 </body>
 </html>
