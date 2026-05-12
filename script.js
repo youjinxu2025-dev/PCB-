@@ -26,7 +26,9 @@
   homeLoginPhone: document.querySelector("#homeLoginPhone"),
   homeLoginPassword: document.querySelector("#homeLoginPassword"),
   homeLoginBtn: document.querySelector("#homeLoginBtn"),
+  homeLogoutBtn: document.querySelector("#homeLogoutBtn"),
   homeLoginMessage: document.querySelector("#homeLoginMessage"),
+  headerLogoutBtn: document.querySelector("#headerLogoutBtn"),
   uploadHeading: document.querySelector("#uploadHeading"),
   uploadPanel: document.querySelector("#uploadPanel")
 };
@@ -151,14 +153,25 @@ function renderOrderAccess() {
 function hydrateAuth() {
   const user = getCurrentUser();
   renderOrderAccess();
-  if (!user) return;
+  if (!user) {
+    els.userBadge.textContent = "未登录";
+    els.authLink.textContent = "账号中心";
+    els.authLink.href = "auth.html";
+    els.homeLoginBtn.textContent = "立即登录";
+    els.homeLoginBtn.classList.remove("is-hidden");
+    els.homeLogoutBtn?.classList.add("is-hidden");
+    els.headerLogoutBtn?.classList.add("is-hidden");
+    return;
+  }
   els.userBadge.textContent = `已登录：${user.name}`;
   els.authLink.textContent = "我的订单";
   els.authLink.href = "my.html";
   setHomeLoginMessage(`当前已登录：${user.name} / ${user.phone || "已绑定账号"}`, "success");
   if (els.homeLoginBtn) {
-    els.homeLoginBtn.textContent = "已登录";
+    els.homeLoginBtn.classList.add("is-hidden");
   }
+  els.homeLogoutBtn?.classList.remove("is-hidden");
+  els.headerLogoutBtn?.classList.remove("is-hidden");
 }
 
 function normalizePhone(phone) {
@@ -167,6 +180,15 @@ function normalizePhone(phone) {
 
 function saveCurrentUser(user) {
   localStorage.setItem("pcbCurrentUser", JSON.stringify(user));
+}
+
+function logoutFromHome() {
+  localStorage.removeItem("pcbCurrentUser");
+  if (els.homeLoginPhone) els.homeLoginPhone.value = "";
+  if (els.homeLoginPassword) els.homeLoginPassword.value = "";
+  setHomeLoginMessage("已退出登录，可以切换其他手机号继续使用。", "info");
+  hydrateAuth();
+  renderOrderAccess();
 }
 
 async function homeLogin() {
@@ -317,6 +339,8 @@ els.complexity.addEventListener("change", updatePrice);
 els.speed.addEventListener("change", updatePrice);
 els.submitOrderBtn.addEventListener("click", submitOrder);
 els.homeLoginBtn.addEventListener("click", homeLogin);
+els.homeLogoutBtn.addEventListener("click", logoutFromHome);
+els.headerLogoutBtn.addEventListener("click", logoutFromHome);
 
 updateSummary();
 updatePrice();

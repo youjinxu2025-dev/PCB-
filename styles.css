@@ -791,6 +791,11 @@ textarea {
   gap: 12px;
 }
 
+.topbar-actions .button-secondary {
+  min-height: 40px;
+  padding-inline: 16px;
+}
+
 .user-badge {
   display: inline-flex;
   align-items: center;
