@@ -27,7 +27,7 @@
   homeLoginPassword: document.querySelector("#homeLoginPassword"),
   homeLoginBtn: document.querySelector("#homeLoginBtn"),
   homeLoginMessage: document.querySelector("#homeLoginMessage"),
-  uploadLoginGate: document.querySelector("#uploadLoginGate"),
+  uploadHeading: document.querySelector("#uploadHeading"),
   uploadPanel: document.querySelector("#uploadPanel")
 };
 
@@ -140,8 +140,8 @@ function getCurrentUser() {
 
 function renderOrderAccess() {
   const user = getCurrentUser();
-  if (els.uploadLoginGate) {
-    els.uploadLoginGate.classList.toggle("is-hidden", Boolean(user));
+  if (els.uploadHeading) {
+    els.uploadHeading.classList.toggle("is-hidden", !user);
   }
   if (els.uploadPanel) {
     els.uploadPanel.classList.toggle("is-hidden", !user);
