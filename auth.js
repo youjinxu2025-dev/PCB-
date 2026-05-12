@@ -121,8 +121,14 @@ async function sendSmsCode(type) {
     }
 
     startCountdown(type, 60);
-    const demoSuffix = data.demoCode ? ` 当前演示环境验证码：${data.demoCode}。` : "";
-    setAuthMessage(`验证码已发送到手机号 ${phone}。${demoSuffix}`, "success");
+    if (data.demoCode) {
+      const targetInput = isRegister ? authEls.registerCode : authEls.resetCode;
+      targetInput.value = data.demoCode;
+      setAuthMessage(`当前是模拟短信模式，验证码已自动填入：${data.demoCode}。可以直接继续提交。`, "success");
+      return;
+    }
+
+    setAuthMessage(`验证码已发送到手机号 ${phone}，请查收短信。`, "success");
   } catch (error) {
     countdownState[type].seconds = 0;
     updateCountdownButton(type);
