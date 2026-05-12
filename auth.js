@@ -35,6 +35,12 @@ function saveCurrentUser(user) {
   localStorage.setItem("pcbCurrentUser", JSON.stringify(user));
 }
 
+function goHomeAfterAuth() {
+  window.setTimeout(() => {
+    window.location.href = "index.html#upload";
+  }, 800);
+}
+
 function normalizePhone(phone) {
   return String(phone || "").replace(/\D/g, "");
 }
@@ -176,8 +182,8 @@ async function register() {
     }
 
     saveCurrentUser(data.user);
-    setAuthMessage(`注册成功，当前已登录账号：${data.user.name} / ${data.user.phone}`, "success");
-    switchMode("login");
+    setAuthMessage(`注册成功，当前已登录账号：${data.user.name} / ${data.user.phone}。正在进入主界面...`, "success");
+    goHomeAfterAuth();
   } catch (error) {
     setAuthMessage(`注册失败：${error.message}`, "error");
   }
@@ -210,7 +216,8 @@ async function login() {
     }
 
     saveCurrentUser(data.user);
-    setAuthMessage(`登录成功，欢迎回来：${data.user.name}`, "success");
+    setAuthMessage(`登录成功，欢迎回来：${data.user.name}。正在进入主界面...`, "success");
+    goHomeAfterAuth();
   } catch (error) {
     setAuthMessage(`登录失败：${error.message}`, "error");
   }
